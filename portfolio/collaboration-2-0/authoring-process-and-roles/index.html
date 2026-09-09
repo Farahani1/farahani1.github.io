@@ -1,0 +1,373 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!--
+  Favicon: the شاه calligraphy, ink #3A2A1E on ground #E9DFC9 so it reads
+  against both light and dark browser chrome. The .ico carries 16/32/48.
+  See docs/art-direction.md — no pure black, no pure white, no emoji.
+--><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.1.3"><!-- Canonical URL --><link rel="canonical" href="https://farahani1.github.io/portfolio/collaboration-2-0/authoring-process-and-roles/"><!-- Primary Meta Tags --><title>The collaborative authoring process | Hossein</title><meta name="title" content="The collaborative authoring process | Hossein"><meta name="description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://farahani1.github.io/portfolio/collaboration-2-0/authoring-process-and-roles/"><meta property="og:title" content="The collaborative authoring process | Hossein"><meta property="og:description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><meta property="og:image" content="https://farahani1.github.io/og.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://farahani1.github.io/portfolio/collaboration-2-0/authoring-process-and-roles/"><meta property="twitter:title" content="The collaborative authoring process | Hossein"><meta property="twitter:description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><meta property="twitter:image" content="https://farahani1.github.io/og.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    updateThemeButtons();
+    addCopyCodeButtons();
+    setGiscusTheme();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    const lightThemeButton = document.getElementById("light-theme-button");
+    lightThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "light");
+      toggleTheme(false);
+      updateThemeButtons();
+    });
+
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    darkThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "dark");
+      toggleTheme(true);
+      updateThemeButtons();
+    });
+
+    const systemThemeButton = document.getElementById("system-theme-button");
+    systemThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "system");
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      updateThemeButtons();
+    });
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (event) => {
+        if (localStorage.theme === "system") {
+          toggleTheme(event.matches);
+        }
+      });
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function updateThemeButtons() {
+    const theme = localStorage.getItem("theme");
+    const lightThemeButton = document.getElementById("light-theme-button");
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    const systemThemeButton = document.getElementById("system-theme-button");
+
+    function removeActiveButtonTheme(button) {
+      // One token, both modes — bg-ink/5 resolves per theme now.
+      button?.classList.remove("bg-ink/5");
+    }
+
+    function addActiveButtonTheme(button) {
+      button?.classList.add("bg-ink/5");
+    }
+
+    removeActiveButtonTheme(lightThemeButton);
+    removeActiveButtonTheme(darkThemeButton);
+    removeActiveButtonTheme(systemThemeButton);
+
+    if (theme === "light") {
+      addActiveButtonTheme(lightThemeButton);
+    } else if (theme === "dark") {
+      addActiveButtonTheme(darkThemeButton);
+    } else {
+      addActiveButtonTheme(systemThemeButton);
+    }
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+    // The CSS already forces these visible under reduced motion; skipping
+    // the timer as well means no staggered class churn either.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    animateElements.forEach((element, index) => {
+      if (reduce) {
+        element.classList.add("show");
+        return;
+      }
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    // CSS cannot reach a scroll behaviour set in JS, so check here too.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({
+      top: 0,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+
+    setGiscusTheme();
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    // Text, not emoji: docs/art-direction.md bans emoji as iconography.
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "Copied";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  const setGiscusTheme = () => {
+    const giscus = document.querySelector(".giscus-frame");
+
+    const isDark = document.documentElement.classList.contains("dark");
+
+    if (giscus) {
+      const url = new URL(giscus.src);
+      url.searchParams.set("theme", isDark ? "dark" : "light");
+      giscus.src = url.toString();
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.B6ZjduXn.css">
+<style>a[data-astro-cid-hh67uq7u][aria-current=location]{color:var(--ink);font-weight:700}a[data-astro-cid-hh67uq7u][aria-current=location]:before{content:"";position:absolute;left:-14.5px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--flow)}
+</style></head> <body> <noscript> <style>
+        .animate {
+          opacity: 1;
+          translate: var(--tw-translate-x) calc(var(--spacing) * 0);
+        }
+      </style> </noscript> <header data-astro-transition-persist="astro-l7r54iwe-1"> <div class="mx-auto px-3 max-w-[820px]">  <div class="flex flex-wrap justify-between gap-y-2">  <a href="/" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out"> <div class="flex flex-col"> <span class="font-semibold">Hossein</span> <span class="text-xs">AI System Design</span> </div> </a> <nav class="flex items-center gap-1 text-sm">  <a href="/portfolio" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Portfolio</a> <span>/</span> <a href="/writing" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Writing</a> <span>/</span> <a href="/workshop" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Workbench</a> <span>/</span> <a href="/work-with-me" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Work with me</a>  <span> / </span> <button id="magnifying-glass" aria-label="Search" class="border-muted/45 bg-ground hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex items-center rounded-sm border px-2 py-1 text-xs transition-colors duration-300 ease-in-out"> <svg height="16" stroke-linejoin="round" viewBox="0 0 16 16" width="16" style="color: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 7C3.5 5.067 5.067 3.5 7 3.5C8.933 3.5 10.5 5.067 10.5 7C10.5 7.88461 10.1718 8.69256 9.63058 9.30876L9.30876 9.63058C8.69256 10.1718 7.88461 10.5 7 10.5C5.067 10.5 3.5 8.933 3.5 7ZM9.96544 11.0261C9.13578 11.6382 8.11014 12 7 12C4.23858 12 2 9.76142 2 7C2 4.23858 4.23858 2 7 2C9.76142 2 12 4.23858 12 7C12 8.11014 11.6382 9.13578 11.0261 9.96544L14.0303 12.9697L14.5607 13.5L13.5 14.5607L12.9697 14.0303L9.96544 11.0261Z" fill="currentColor"></path></svg>
+&nbsp;Search
+</button> </nav> </div>  </div> </header> <main> <div class="mx-auto flex max-w-[1340px] flex-wrap items-start gap-x-9 px-4 pb-24"><aside class="order-1 w-full shrink-0 self-start py-2 lg:sticky lg:top-24 lg:w-[262px]"><div class="border-ink/15 max-h-[calc(100vh-8rem)] overflow-y-auto pb-4 lg:border-r lg:pr-5"><nav aria-label="Pages in this project" class="text-ink/75"> <p class="text-quiet border-ink/15 mb-3.5 border-b pb-2.5 font-mono text-[10.5px] tracking-[0.1em] uppercase">
+In this project
+</p> <a href="/portfolio/collaboration-2-0" class="mb-1 flex items-center justify-between gap-2 border-l-2 py-1.5 pr-1 pl-2.5 text-[15.5px] leading-tight font-semibold no-underline transition-colors border-ink/25 text-ink hover:bg-ink/5"> Collaboration 2.0 — R&amp;D Operating Model </a>  <ul class="border-ink/15 ml-2.5 list-none border-l pl-0"> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Modeling and diagnosis </li><li> <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Symptoms and diagnosis </a> </li> <li> <a href="/portfolio/collaboration-2-0/clues-root-causes" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Clues — where the regress terminates </a> </li> <li> <a href="/portfolio/collaboration-2-0/disclaimers" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Disclaimers </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Solution — Collaboration 2.0 </li><li> <a href="/portfolio/collaboration-2-0/a-new-lens" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> A new lens — the organization as a complex system </a> </li> <li> <a href="/portfolio/collaboration-2-0/approach" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The approach — Collaboration 2.0 </a> </li> <li> <a href="/portfolio/collaboration-2-0/prd-as-the-wedge" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> What gets discussed — the PRD </a> </li> <script type="module">const l=document.querySelector("[data-on-this-page]");if(l){const e=new Map;for(const t of l.querySelectorAll("[data-toc-link]"))e.set(t.dataset.tocLink,t);const i=[...e.keys()].map(t=>document.getElementById(t)).filter(t=>t!==null);let n=null;const r=()=>{let t=i.length?i[0].id:null;for(const o of i)if(o.getBoundingClientRect().top<=120)t=o.id;else break;t!==n&&(n&&e.get(n)?.removeAttribute("aria-current"),t&&e.get(t)?.setAttribute("aria-current","location"),n=t)};window.addEventListener("scroll",r,{passive:!0}),r()}</script><li> <a href="/portfolio/collaboration-2-0/authoring-process-and-roles" aria-current="page" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors border-accent text-accent bg-accent/10 font-semibold" style="padding-left: 12px"> The collaborative authoring process </a> </li> <li> <nav aria-label="On this page" data-on-this-page class="border-flow/45 mt-1 mb-2 ml-3 border-l-2 pl-2.5" data-astro-cid-hh67uq7u><p class="text-quiet mb-1 font-mono text-[9.5px] tracking-[0.11em] uppercase" data-astro-cid-hh67uq7u>
+On this page
+</p><ul class="list-none p-0" data-astro-cid-hh67uq7u><li data-astro-cid-hh67uq7u><a href="#24--the-collaborative-authoring-process" data-toc-link="24--the-collaborative-authoring-process" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-ink text-[13.5px] font-semibold" style="padding-left: 4px" data-astro-cid-hh67uq7u>2.4 · The collaborative authoring process</a></li><li data-astro-cid-hh67uq7u><a href="#241--the-authoring-loop" data-toc-link="241--the-authoring-loop" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[13px]" style="padding-left: 15px" data-astro-cid-hh67uq7u>2.4.1 · The authoring loop</a></li><li data-astro-cid-hh67uq7u><a href="#242--roles-and-lifecycle-mapping" data-toc-link="242--roles-and-lifecycle-mapping" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[13px]" style="padding-left: 15px" data-astro-cid-hh67uq7u>2.4.2 · Roles and lifecycle mapping</a></li></ul></nav> </li><li> <a href="/portfolio/collaboration-2-0/adoption" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The adoption argument </a> </li> <li> <a href="/portfolio/collaboration-2-0/measurement-and-refinement" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Measurement, feedback and refinement </a> </li> <li> <a href="/portfolio/collaboration-2-0/what-would-have-come-next" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> What would have come next </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Ending </li><li> <a href="/portfolio/collaboration-2-0/results-and-reflection" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Status, outcome and reflection </a> </li> <li> <a href="/portfolio/collaboration-2-0/artifacts" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Artifacts </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Appendix </li><li> <a href="/portfolio/collaboration-2-0/intellectual-assets-evidence" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Evidence — the intellectual-assets analysis </a> </li> <li> <a href="/portfolio/collaboration-2-0/strategy" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The phased strategy </a> </li> <li> <a href="/portfolio/collaboration-2-0/survey-analysis" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The survey — instrument, results and reading </a> </li>  </ul> </nav></div></aside><div class="order-2 min-w-0 flex-1 basis-[440px]"><nav aria-label="Breadcrumb" class="mb-6"> <ol class="text-quiet flex list-none flex-wrap items-center gap-x-1.5 gap-y-1 p-0 font-mono text-[11px] tracking-[0.06em] uppercase"> <li class="flex items-center gap-1.5"> <a href="/portfolio" class="hover:text-ink no-underline"> Portfolio </a> <span aria-hidden="true">›</span> </li><li class="flex items-center gap-1.5"> <a href="/portfolio/collaboration-2-0" class="hover:text-ink no-underline"> Collaboration 2.0 — R&amp;D Operating Model </a> <span aria-hidden="true">›</span> </li> <li class="text-accent" aria-current="page">The collaborative authoring process</li> </ol> </nav><div class="animate space-y-1"><h1 class="text-ink text-3xl font-semibold">The collaborative authoring process</h1></div><article class="animate article-wide mt-8"><p><a href="/portfolio">← Portfolio</a> · <a href="/portfolio/collaboration-2-0">← Collaboration 2.0</a></p>
+<h2 id="24--the-collaborative-authoring-process">2.4 · The collaborative authoring process</h2>
+<p><strong>Sub-sections:</strong> <a href="#241--the-authoring-loop">2.4.1 The authoring loop</a> · <a href="#242--roles-and-lifecycle-mapping">2.4.2 Roles and lifecycle mapping</a></p>
+<hr>
+<h3 id="241--the-authoring-loop">2.4.1 · The authoring loop</h3>
+<p>One note on reading Figure 6: I was a member of the system design team, and that block refers
+to a high degree to me, as the person responsible for this change.</p>
+<p>The document is alive. The process is a loop, not a pipeline.</p>
+<figure class="diagram"><!-- Generated by scripts/diagrams.mjs. Do not edit.
+     Source: src\content\portfolio\collaboration-2-0\authoring-process-and-roles.md (diagram 1)
+     mermaid-hash: f62987110f42 -->
+<svg id="mmd-authoring-process-and-roles-1" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="max-width: 1281px; min-width: 961px;" viewBox="-88.5390625 0 1280.8046875 490" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#mmd-authoring-process-and-roles-1{font-family:"Courier New",Courier,monospace;font-size:15px;fill:var(--diagram-node-text, #3a2a1e);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mmd-authoring-process-and-roles-1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mmd-authoring-process-and-roles-1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mmd-authoring-process-and-roles-1 .error-icon{fill:var(--diagram-surface, #e3d2b9);}#mmd-authoring-process-and-roles-1 .error-text{fill:var(--diagram-surface, #e3d2b9);stroke:var(--diagram-surface, #e3d2b9);}#mmd-authoring-process-and-roles-1 .edge-thickness-normal{stroke-width:1px;}#mmd-authoring-process-and-roles-1 .edge-thickness-thick{stroke-width:3.5px;}#mmd-authoring-process-and-roles-1 .edge-pattern-solid{stroke-dasharray:0;}#mmd-authoring-process-and-roles-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#mmd-authoring-process-and-roles-1 .edge-pattern-dashed{stroke-dasharray:3;}#mmd-authoring-process-and-roles-1 .edge-pattern-dotted{stroke-dasharray:2;}#mmd-authoring-process-and-roles-1 .marker{fill:var(--diagram-line, #9a8e7c);stroke:var(--diagram-line, #9a8e7c);}#mmd-authoring-process-and-roles-1 .marker.cross{stroke:var(--diagram-line, #9a8e7c);}#mmd-authoring-process-and-roles-1 svg{font-family:"Courier New",Courier,monospace;font-size:15px;}#mmd-authoring-process-and-roles-1 p{margin:0;}#mmd-authoring-process-and-roles-1 .label{font-family:"Courier New",Courier,monospace;color:var(--diagram-node-text, #3a2a1e);}#mmd-authoring-process-and-roles-1 .cluster-label text{fill:var(--diagram-node-text, #3a2a1e);}#mmd-authoring-process-and-roles-1 .cluster-label span{color:var(--diagram-node-text, #3a2a1e);}#mmd-authoring-process-and-roles-1 .cluster-label span p{}#mmd-authoring-process-and-roles-1 .label text,#mmd-authoring-process-and-roles-1 span{fill:var(--diagram-node-text, #3a2a1e);color:var(--diagram-node-text, #3a2a1e);}#mmd-authoring-process-and-roles-1 .node rect,#mmd-authoring-process-and-roles-1 .node circle,#mmd-authoring-process-and-roles-1 .node ellipse,#mmd-authoring-process-and-roles-1 .node polygon,#mmd-authoring-process-and-roles-1 .node path{fill:var(--diagram-node-fill, #dec7ab);stroke:var(--diagram-node-stroke, #897b6b);stroke-width:1px;}#mmd-authoring-process-and-roles-1 .rough-node .label text,#mmd-authoring-process-and-roles-1 .node .label text,#mmd-authoring-process-and-roles-1 .image-shape .label,#mmd-authoring-process-and-roles-1 .icon-shape .label{text-anchor:middle;}#mmd-authoring-process-and-roles-1 .node .katex path{fill:var(--diagram-node-text, #3a2a1e);stroke:var(--diagram-node-text, #3a2a1e);stroke-width:1px;}#mmd-authoring-process-and-roles-1 .rough-node .label,#mmd-authoring-process-and-roles-1 .node .label,#mmd-authoring-process-and-roles-1 .image-shape .label,#mmd-authoring-process-and-roles-1 .icon-shape .label{text-align:center;}#mmd-authoring-process-and-roles-1 .node.clickable{cursor:pointer;}#mmd-authoring-process-and-roles-1 .root .anchor path{fill:var(--diagram-line, #9a8e7c)!important;stroke-width:0;stroke:var(--diagram-line, #9a8e7c);}#mmd-authoring-process-and-roles-1 .arrowheadPath{fill:var(--diagram-node-fill, #dec7ab);}#mmd-authoring-process-and-roles-1 .edgePaths .path{stroke:var(--diagram-line, #9a8e7c);stroke-width:1px;}#mmd-authoring-process-and-roles-1 .flowchart-link{stroke:var(--diagram-line, #9a8e7c);fill:none;}#mmd-authoring-process-and-roles-1 .edgeLabel{text-align:center;}#mmd-authoring-process-and-roles-1 .edgeLabel p{}#mmd-authoring-process-and-roles-1 .edgeLabel rect{opacity:0.5;fill:var(--diagram-surface, #e3d2b9);}#mmd-authoring-process-and-roles-1 .labelBkg{}#mmd-authoring-process-and-roles-1 .cluster rect{fill:var(--diagram-surface, #e3d2b9);stroke:var(--diagram-node-stroke, #897b6b);stroke-width:1px;}#mmd-authoring-process-and-roles-1 .cluster text{fill:var(--diagram-node-text, #3a2a1e);}#mmd-authoring-process-and-roles-1 .cluster span{color:var(--diagram-node-text, #3a2a1e);}#mmd-authoring-process-and-roles-1 .node .collapsed-indicator{fill:var(--diagram-node-stroke, #897b6b);stroke:none;opacity:0.6;}#mmd-authoring-process-and-roles-1 .node .collapsed-separator{stroke:var(--diagram-node-stroke, #897b6b);stroke-width:0.75px;}#mmd-authoring-process-and-roles-1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"Courier New",Courier,monospace;font-size:12px;background:var(--diagram-surface, #e3d2b9);border:1px solid hsl(1.4173228346, 60%, 39.8039215686%);border-radius:2px;pointer-events:none;z-index:100;}#mmd-authoring-process-and-roles-1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:var(--diagram-node-text, #3a2a1e);}#mmd-authoring-process-and-roles-1 rect.text{fill:none;stroke-width:0;}#mmd-authoring-process-and-roles-1 .icon-shape,#mmd-authoring-process-and-roles-1 .image-shape{text-align:center;}#mmd-authoring-process-and-roles-1 .icon-shape p,#mmd-authoring-process-and-roles-1 .image-shape p{padding:2px;}#mmd-authoring-process-and-roles-1 .icon-shape .label rect,#mmd-authoring-process-and-roles-1 .image-shape .label rect{opacity:0.5;fill:var(--diagram-surface, #e3d2b9);}#mmd-authoring-process-and-roles-1 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mmd-authoring-process-and-roles-1 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mmd-authoring-process-and-roles-1 .node .neo-node{stroke:var(--diagram-node-stroke, #897b6b);}#mmd-authoring-process-and-roles-1 [data-look="neo"].node rect,#mmd-authoring-process-and-roles-1 [data-look="neo"].cluster rect,#mmd-authoring-process-and-roles-1 [data-look="neo"].node polygon{stroke:url(#mmd-authoring-process-and-roles-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-authoring-process-and-roles-1 [data-look="neo"].swimlane.cluster rect{filter:none;}#mmd-authoring-process-and-roles-1 [data-look="neo"].node path{stroke:url(#mmd-authoring-process-and-roles-1-gradient);stroke-width:1px;}#mmd-authoring-process-and-roles-1 [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-authoring-process-and-roles-1 [data-look="neo"].node .neo-line path{stroke:var(--diagram-node-stroke, #897b6b);filter:none;}#mmd-authoring-process-and-roles-1 [data-look="neo"].node circle{stroke:url(#mmd-authoring-process-and-roles-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-authoring-process-and-roles-1 [data-look="neo"].node circle .state-start{fill:var(--diagram-node-text, #3a2a1e);}#mmd-authoring-process-and-roles-1 [data-look="neo"].icon-shape .icon{fill:url(#mmd-authoring-process-and-roles-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-authoring-process-and-roles-1 [data-look="neo"].icon-shape .icon-neo path{stroke:url(#mmd-authoring-process-and-roles-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-authoring-process-and-roles-1 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></polygon></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></circle></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></circle></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"></path></marker><marker id="mmd-authoring-process-and-roles-1_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"><g class="cluster" id="mmd-authoring-process-and-roles-1-SHARED" data-look="classic"><rect style="" x="-80.5390625" y="8" width="458.140625" height="474"></rect><g class="cluster-label" transform="translate(-76.5390625, 8)"><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Shared,</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> transparent</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> space</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> —</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> single</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> source</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> of</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> truth</tspan></tspan></text></g></g></g></g><g class="edgePaths"><path d="M965.545,188.25L943.236,200.25C920.928,212.25,876.312,236.25,817.494,248.25C758.677,260.25,685.659,260.25,611.807,260.25C537.956,260.25,463.271,260.25,409.341,260.25C355.411,260.25,322.237,260.25,302.146,259.87C282.055,259.49,275.047,258.729,271.543,258.349L268.039,257.969" id="mmd-authoring-process-and-roles-1-L_CFT_DOC_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_CFT_DOC_0" data-points="W3sieCI6OTY1LjU0NDU4NDg0OTI3MjQsInkiOjE4OC4yNX0seyJ4Ijo4MzEuNjk1MzEyNSwieSI6MjYwLjI1fSx7IngiOjYxMi42NDA2MjUsInkiOjI2MC4yNX0seyJ4IjozODguNTg1OTM3NSwieSI6MjYwLjI1fSx7IngiOjI4OS4wNjI1LCJ5IjoyNjAuMjV9LHsieCI6MjY0LjA2MjUsInkiOjI1Ny41MzcwODAyNzU3MzkzNn1d" data-look="classic" marker-end="url(#mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd)"></path><path d="M177.066,205L195.732,178.833C214.398,152.667,251.73,100.333,286.984,74.167C322.237,48,355.411,48,409.341,48C463.271,48,537.956,48,611.807,48C685.659,48,758.677,48,812.287,55.038C865.898,62.076,900.1,76.152,917.201,83.19L934.303,90.228" id="mmd-authoring-process-and-roles-1-L_DOC_CFT_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_DOC_CFT_0" data-points="W3sieCI6MTc3LjA2NTUxMzk1OTM5MDg3LCJ5IjoyMDV9LHsieCI6Mjg5LjA2MjUsInkiOjQ4fSx7IngiOjM4OC41ODU5Mzc1LCJ5Ijo0OH0seyJ4Ijo2MTIuNjQwNjI1LCJ5Ijo0OH0seyJ4Ijo4MzEuNjk1MzEyNSwieSI6NDh9LHsieCI6OTM4LjAwMTU3MDk5MTg0NzksInkiOjkxLjc1fV0=" data-look="classic" marker-end="url(#mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd)"></path><path d="M501.122,169.847L482.366,173.185C463.61,176.523,426.098,183.199,390.755,186.537C355.411,189.875,322.237,189.875,299.844,192.152C277.451,194.43,265.839,198.985,260.034,201.262L254.228,203.539" id="mmd-authoring-process-and-roles-1-L_SE_DOC_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_SE_DOC_0" data-points="W3sieCI6NTAxLjEyMjA3MDMxMjUsInkiOjE2OS44NDY5NTA4Mzk0NjQ0M30seyJ4IjozODguNTg1OTM3NSwieSI6MTg5Ljg3NX0seyJ4IjoyODkuMDYyNSwieSI6MTg5Ljg3NX0seyJ4IjoyNTAuNTA0MDM5MTE1NjQ2MjYsInkiOjIwNX1d" data-look="classic" marker-end="url(#mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd)"></path><path d="M191.524,205L207.78,189.875C224.037,174.75,256.55,144.5,289.393,129.375C322.237,114.25,355.411,114.25,390.096,117.138C424.781,120.025,460.977,125.801,479.074,128.688L497.172,131.576" id="mmd-authoring-process-and-roles-1-L_DOC_SE_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_DOC_SE_0" data-points="W3sieCI6MTkxLjUyMzYwMTgxNjQ0MzYsInkiOjIwNX0seyJ4IjoyODkuMDYyNSwieSI6MTE0LjI1fSx7IngiOjM4OC41ODU5Mzc1LCJ5IjoxMTQuMjV9LHsieCI6NTAxLjEyMjA3MDMxMjUsInkiOjEzMi4yMDYxODIwMDU5OTc0Mn1d" data-look="classic" marker-end="url(#mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd)"></path><path d="M724.159,150L742.082,150C760.005,150,795.85,150,828.861,149.325C861.871,148.65,892.047,147.3,907.135,146.625L922.223,145.95" id="mmd-authoring-process-and-roles-1-L_SE_CFT_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_SE_CFT_0" data-points="W3sieCI6NzI0LjE1OTE3OTY4NzUsInkiOjE1MH0seyJ4Ijo4MzEuNjk1MzEyNSwieSI6MTUwfSx7IngiOjkyNi4yMTg3NSwieSI6MTQ1Ljc3MTY1MDI0MTE0MDd9XQ==" data-look="classic" marker-end="url(#mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd)"></path><path d="M193.322,285L209.279,299.25C225.236,313.5,257.149,342,289.693,356.25C322.237,370.5,355.411,370.5,387.919,370.5C420.427,370.5,452.268,370.5,468.189,370.5L484.109,370.5" id="mmd-authoring-process-and-roles-1-L_DOC_USE_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_DOC_USE_0" data-points="W3sieCI6MTkzLjMyMjA4NjY1MzM4NjQ2LCJ5IjoyODV9LHsieCI6Mjg5LjA2MjUsInkiOjM3MC41fSx7IngiOjM4OC41ODU5Mzc1LCJ5IjozNzAuNX0seyJ4Ijo0ODguMTA5Mzc1LCJ5IjozNzAuNX1d" data-look="classic" marker-end="url(#mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd)"></path><path d="M737.172,370.5L752.926,370.5C768.68,370.5,800.188,370.5,833.286,373.274C866.384,376.047,901.073,381.595,918.417,384.369L935.761,387.142" id="mmd-authoring-process-and-roles-1-L_USE_CR_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_USE_CR_0" data-points="W3sieCI6NzM3LjE3MTg3NSwieSI6MzcwLjV9LHsieCI6ODMxLjY5NTMxMjUsInkiOjM3MC41fSx7IngiOjkzOS43MTA5Mzc1LCJ5IjozODcuNzc0MDQ0MTc0MTgwNDZ9XQ==" data-look="classic" marker-end="url(#mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd)"></path><path d="M939.711,435.062L921.708,439.552C903.706,444.041,867.701,453.021,813.189,457.51C758.677,462,685.659,462,611.807,462C537.956,462,463.271,462,409.341,462C355.411,462,322.237,462,286.908,433.06C251.578,404.119,214.094,346.238,195.352,317.298L176.61,288.357" id="mmd-authoring-process-and-roles-1-L_CR_DOC_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_CR_DOC_0" data-points="W3sieCI6OTM5LjcxMDkzNzUsInkiOjQzNS4wNjIxNTQ4ODkyMTUxfSx7IngiOjgzMS42OTUzMTI1LCJ5Ijo0NjJ9LHsieCI6NjEyLjY0MDYyNSwieSI6NDYyfSx7IngiOjM4OC41ODU5Mzc1LCJ5Ijo0NjJ9LHsieCI6Mjg5LjA2MjUsInkiOjQ2Mn0seyJ4IjoxNzQuNDM1NjI3ODgwMTg0MzQsInkiOjI4NX1d" data-look="classic" marker-end="url(#mmd-authoring-process-and-roles-1_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(612.640625, 260.25)"><g class="label" data-id="L_CFT_DOC_0" transform="translate(0, -19.75)"><g><rect class="background" style="" x="-96.53125" y="1" width="193.0625" height="37.5"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">contribute</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> object</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">review</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(612.640625, 48)"><g class="label" data-id="L_DOC_CFT_0" transform="translate(0, -11.5)"><g><rect class="background" style="" x="-101.03125" y="1" width="202.0625" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">visible</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> to</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> all,</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> always</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(388.5859375, 189.875)"><g class="label" data-id="L_SE_DOC_0" transform="translate(0.5, -11.5)"><g><rect class="background" style="" x="-75.0234375" y="1" width="149.046875" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">monitor</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> refine</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(388.5859375, 114.25)"><g class="label" data-id="L_DOC_SE_0" transform="translate(0, -11.5)"><g><rect class="background" style="" x="-47.0078125" y="1" width="94.015625" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">assessment</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(831.6953125, 150)"><g class="label" data-id="L_SE_CFT_0" transform="translate(0, -19.75)"><g><rect class="background" style="" x="-69.5234375" y="1" width="139.046875" height="37.5"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">feedback</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> on</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> the</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">process</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> itself</tspan></tspan></text></g></g></g><g class="edgeLabel"><g class="label" data-id="L_DOC_USE_0" transform="translate(0, 0)"><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"></tspan></text></g></g><g><rect class="background" style="stroke: none"></rect></g><g class="edgeLabel"><g class="label" data-id="L_USE_CR_0" transform="translate(0, 0)"><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"></tspan></text></g></g><g><rect class="background" style="stroke: none"></rect></g><g class="edgeLabel"><g class="label" data-id="L_CR_DOC_0" transform="translate(0, 0)"><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"></tspan></text></g></g><g><rect class="background" style="stroke: none"></rect></g></g><g class="nodes"><g class="node default" id="mmd-authoring-process-and-roles-1-flowchart-DOC-0" data-look="classic" transform="translate(148.53125, 245)"><rect class="basic label-container" style="" x="-115.53125" y="-40" width="231.0625" height="80"></rect><g class="label" style="" transform="translate(0, -25)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">PRD</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> +</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> appendices</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">&#x3C;i></tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> reference</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">history</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> data</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> &#x3C;/i></tspan></tspan></text></g></g></g><g class="node default" id="mmd-authoring-process-and-roles-1-flowchart-CFT-1" data-look="classic" transform="translate(1055.2421875, 140)"><rect class="basic label-container" style="" x="-129.0234375" y="-48.25" width="258.046875" height="96.5"></rect><g class="label" style="" transform="translate(0, -33.25)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Cross-functional</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> teams</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">&#x3C;i></tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> domain</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> experts</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">dev</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> market</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> design</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="3.2em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">&#x3C;/i></tspan></tspan></text></g></g></g><g class="node default" id="mmd-authoring-process-and-roles-1-flowchart-SE-2" data-look="classic" transform="translate(612.640625, 150)"><rect class="basic label-container" style="" x="-111.5185546875" y="-56.5" width="223.037109375" height="113"></rect><g class="label" style="" transform="translate(0, -41.5)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">System</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> design</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> team</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">&#x3C;i></tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> stewards</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> the</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">process,</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="3.2em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">does</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> not</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> own</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> the</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="4.300000000000001em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">content</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> &#x3C;/i></tspan></tspan></text></g></g></g><g class="node default" id="mmd-authoring-process-and-roles-1-flowchart-USE-14" data-look="classic" transform="translate(612.640625, 370.5)"><rect class="basic label-container" style="" x="-124.53125" y="-56.5" width="249.0625" height="113"></rect><g class="label" style="" transform="translate(0, -41.5)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">In</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> use:</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">grooming</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> milestones</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">·</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="3.2em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">roles</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> and</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="4.300000000000001em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">responsibilities</tspan></tspan></text></g></g></g><g class="node default" id="mmd-authoring-process-and-roles-1-flowchart-CR-16" data-look="classic" transform="translate(1055.2421875, 406.25)"><rect class="basic label-container" style="" x="-115.53125" y="-56.5" width="231.0625" height="113"></rect><g class="label" style="" transform="translate(0, -41.5)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Change</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> requests:</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">clarification</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> new</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">feature</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="3.2em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">tech</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> issue</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> market</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="4.300000000000001em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">shift</tspan></tspan></text></g></g></g></g></g></g><defs><filter id="mmd-authoring-process-and-roles-1-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="var(--diagram-node-text, #3a2a1e)"></feDropShadow></filter></defs><defs><filter id="mmd-authoring-process-and-roles-1-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="var(--diagram-node-text, #3a2a1e)"></feDropShadow></filter></defs><linearGradient id="mmd-authoring-process-and-roles-1-gradient" gradientUnits="objectBoundingBox" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="var(--diagram-node-stroke, #897b6b)" stop-opacity="1"></stop><stop offset="100%" stop-color="hsl(1.1811023622, 60%, 39.8039215686%)" stop-opacity="1"></stop></linearGradient></svg></figure>
+<blockquote>
+<p><strong>Figure 6 — the collaborative authoring loop.</strong> The PRD and its appendices sit in one shared
+space that everybody can see. Cross-functional teams write into it and read from it. The
+system design team looks after the process without owning what is written. Change requests
+come back from people using the document, which is what makes this a loop instead of a
+pipeline.</p>
+</blockquote>
+<p><strong>Design → Use → Update.</strong> The PRD is not signed off and frozen. Change requests arrive from two
+directions. Some are about the content: a clarification, a new feature, a technical problem, a
+change in the market. Some are about the process itself, from the stakeholders and developers
+who have to work it.</p>
+<p>The second channel is the unusual one. <strong>How the PRD gets made is open to revision on the same
+footing as the product.</strong></p>
+<p><strong>Approval is a checklist, not a signature.</strong> A PRD counts as complete when five things are
+true:</p>
+<ul>
+<li>the market goals and the performance numbers are there,</li>
+<li>priorities are stated as expected benefit against expected cost,</li>
+<li>dependencies and limitations are written down,</li>
+<li>the assumptions and the goals do not contradict each other,</li>
+<li>the content has been checked — by fact-checking, by peer review, and against what users say.</li>
+</ul>
+<p>So approval stops being about who signed it. It becomes about what is demonstrably in it.</p>
+<p>That is the whole reform, in miniature.</p>
+<p><strong>The likely failures were named up front.</strong> The rollout material lists them:</p>
+<ul>
+<li>poor communication,</li>
+<li>requirements written so vaguely that nobody can check them,</li>
+<li>every feature marked high priority,</li>
+<li>language too technical for the people who have to read it,</li>
+<li>attention on the technology instead of on what the user needs,</li>
+<li>treating the PRD as final rather than living.</li>
+</ul>
+<p>They were in the launch material, which gives everyone permission to point at them.</p>
+<p><strong>And a stated position on perfectionism:</strong> <em>imperfect action beats perfect inaction.</em></p>
+<p><strong>A tension inside the design, which I would rather name than smooth over.</strong> I pushed hard for
+people to contribute to the PRD. At the same time I said publicly that nobody should rush to
+blame a contributor, because market strategy and forecasting are genuinely difficult and full
+of factors nobody controls. Those two forces pull against each other. Press people to
+contribute, but do not punish the contribution for being imperfect.</p>
+<p>The standard I settled on is that a plain, simple strategy beats no strategy at all. A stated
+plan gives you a baseline. Six months later you can ask why a decision was made, and trace how
+you got there. Against silence you can ask nothing.</p>
+<p>The same transparency is also what stops someone steering a feature toward their own interest.
+The reasoning is public, and there are enough sharp people watching that a self-serving
+argument gets caught.</p>
+<p><strong>The platform was Confluence.</strong> It is exactly what I had been describing to myself before I
+found it. Notion was the alternative considered.</p>
+<p><strong>What stewarding the process meant in practice.</strong> For each part of the document the responsible
+and accountable person was named, and they were the ones who answered for the final content.
+Beyond that, the steward’s job was to watch for the political moves the old pattern rewards, and
+to keep an argument from being won by position rather than by evidence.</p>
+<hr>
+<h3 id="242--roles-and-lifecycle-mapping">2.4.2 · Roles and lifecycle mapping</h3>
+<p>Transparency on its own produces a different disease: everyone can see everything, and nobody
+owns anything. So the framework came with a responsibility model attached.</p>
+<p><strong>That part is not mine.</strong> A teammate — I will call him Hamed — proposed a role and lifecycle
+model. I found it well matched to the platform, and complementary to it, so it is introduced
+here rather than claimed. In outline: ten roles, five lifecycle phases, arranged as a <strong>RACI
+matrix</strong>, with one rule held firm — <em>exactly one accountable person per activity</em>. Several people
+may do the work. One person answers for it. Each phase also names who owns which artifact.</p>
+<p>The concepts it rests on are standard, and worth naming rather than explaining here: the system
+life cycle processes of <strong>ISO/IEC/IEEE 15288</strong>, its software counterpart <strong>12207</strong>, the
+<strong>INCOSE Systems Engineering Handbook</strong>, and the <strong>RACI</strong> responsibility-assignment convention.</p>
+<p><strong>How it helps Collaboration 2.0.</strong> The platform makes contribution visible; the RACI matrix
+makes ownership unambiguous. Without the second, wide participation turns into a crowd with no
+author. With it, every artifact the authoring loop produces has one name attached to it before
+the work starts.</p>
+<p>The claim has to stay narrow. A responsibility matrix does not rebalance a company’s authority,
+and
+<a href="/portfolio/collaboration-2-0/clues-root-causes#122--what-these-two-conditions-are-and-what-they-are-not">1.2.2</a>
+says plainly that the enabling conditions cannot be removed by decree. What the matrix does is
+smaller and real. Inside the work it covers, it puts authority and responsibility back together,
+and the name against each decision is written down before the decision rather than looked for
+afterwards.</p>
+<hr>
+<p>⟵ <a href="/portfolio/collaboration-2-0">Up: Collaboration 2.0</a> · Previous: <a href="/portfolio/collaboration-2-0/prd-as-the-wedge">2.3 · What gets discussed — the PRD</a> · Next: <a href="/portfolio/collaboration-2-0/adoption">2.5 · The adoption argument →</a></p></article></div></div> </main> <footer class="animate"> <div class="mx-auto px-3 max-w-(--measure)">  <div class="relative"> <div class="absolute -top-12 right-0"> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{const o=window.matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:0,behavior:o?"auto":"smooth"})})});</script> <button id="back-to-top" class="group border-muted/45 hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex w-fit flex-nowrap rounded-sm border px-3 py-1.5 transition-colors duration-300 ease-in-out"> <div class="text-sm">Back to top</div> </button> </div> </div> <div class="flex items-center justify-between"> <div class="flex flex-wrap items-center gap-x-2 gap-y-1"> <span>&copy; 2026 • Hossein</span> <a href="/manifesto" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Manifesto</a><a href="/rss.xml" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">RSS</a> </div> <div class="flex flex-wrap items-center gap-1.5"> <button id="light-theme-button" aria-label="Light theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> <button id="dark-theme-button" aria-label="Dark theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> <button id="system-theme-button" aria-label="System theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect> <line x1="8" y1="21" x2="16" y2="21"></line> <line x1="12" y1="17" x2="12" y2="21"></line> </svg> </button> </div> </div>  </div> </footer> <aside data-pagefind-ignore> <div id="backdrop" class="bg-[rgba(0, 0, 0, 0.5] invisible fixed top-0 left-0 z-50 flex h-screen w-full justify-center p-6 backdrop-blur-xs" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="border-muted/45 bg-ground m-0 flex h-fit max-h-[80%] w-full max-w-(--breakpoint-sm) flex-col overflow-auto rounded-sm border p-2 px-4 py-3 shadow-lg"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&#34;showImages&#34;:false,&#34;excerptLength&#34;:15,&#34;resetStyles&#34;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="mr-2 pt-4 pb-1 text-right text-xs">
+Press <span class="prose text-xs"><kbd class="">Esc</kbd></span> or click
+        anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

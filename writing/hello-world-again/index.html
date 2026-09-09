@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!--
+  Favicon: the شاه calligraphy, ink #3A2A1E on ground #E9DFC9 so it reads
+  against both light and dark browser chrome. The .ico carries 16/32/48.
+  See docs/art-direction.md — no pure black, no pure white, no emoji.
+--><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.1.3"><!-- Canonical URL --><link rel="canonical" href="https://farahani1.github.io/writing/hello-world-again/"><!-- Primary Meta Tags --><title>Hello World Again | Hossein</title><meta name="title" content="Hello World Again | Hossein"><meta name="description" content="What a hundred days of internet blackout did to my mind — and why the people it damaged most were not the ones scrolling for entertainment."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://farahani1.github.io/writing/hello-world-again/"><meta property="og:title" content="Hello World Again | Hossein"><meta property="og:description" content="What a hundred days of internet blackout did to my mind — and why the people it damaged most were not the ones scrolling for entertainment."><meta property="og:image" content="https://farahani1.github.io/og.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://farahani1.github.io/writing/hello-world-again/"><meta property="twitter:title" content="Hello World Again | Hossein"><meta property="twitter:description" content="What a hundred days of internet blackout did to my mind — and why the people it damaged most were not the ones scrolling for entertainment."><meta property="twitter:image" content="https://farahani1.github.io/og.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    updateThemeButtons();
+    addCopyCodeButtons();
+    setGiscusTheme();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    const lightThemeButton = document.getElementById("light-theme-button");
+    lightThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "light");
+      toggleTheme(false);
+      updateThemeButtons();
+    });
+
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    darkThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "dark");
+      toggleTheme(true);
+      updateThemeButtons();
+    });
+
+    const systemThemeButton = document.getElementById("system-theme-button");
+    systemThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "system");
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      updateThemeButtons();
+    });
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (event) => {
+        if (localStorage.theme === "system") {
+          toggleTheme(event.matches);
+        }
+      });
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function updateThemeButtons() {
+    const theme = localStorage.getItem("theme");
+    const lightThemeButton = document.getElementById("light-theme-button");
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    const systemThemeButton = document.getElementById("system-theme-button");
+
+    function removeActiveButtonTheme(button) {
+      // One token, both modes — bg-ink/5 resolves per theme now.
+      button?.classList.remove("bg-ink/5");
+    }
+
+    function addActiveButtonTheme(button) {
+      button?.classList.add("bg-ink/5");
+    }
+
+    removeActiveButtonTheme(lightThemeButton);
+    removeActiveButtonTheme(darkThemeButton);
+    removeActiveButtonTheme(systemThemeButton);
+
+    if (theme === "light") {
+      addActiveButtonTheme(lightThemeButton);
+    } else if (theme === "dark") {
+      addActiveButtonTheme(darkThemeButton);
+    } else {
+      addActiveButtonTheme(systemThemeButton);
+    }
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+    // The CSS already forces these visible under reduced motion; skipping
+    // the timer as well means no staggered class churn either.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    animateElements.forEach((element, index) => {
+      if (reduce) {
+        element.classList.add("show");
+        return;
+      }
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    // CSS cannot reach a scroll behaviour set in JS, so check here too.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({
+      top: 0,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+
+    setGiscusTheme();
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    // Text, not emoji: docs/art-direction.md bans emoji as iconography.
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "Copied";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  const setGiscusTheme = () => {
+    const giscus = document.querySelector(".giscus-frame");
+
+    const isDark = document.documentElement.classList.contains("dark");
+
+    if (giscus) {
+      const url = new URL(giscus.src);
+      url.searchParams.set("theme", isDark ? "dark" : "light");
+      giscus.src = url.toString();
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.B6ZjduXn.css"></head> <body> <noscript> <style>
+        .animate {
+          opacity: 1;
+          translate: var(--tw-translate-x) calc(var(--spacing) * 0);
+        }
+      </style> </noscript> <header data-astro-transition-persist="astro-l7r54iwe-1"> <div class="mx-auto px-3 max-w-[820px]">  <div class="flex flex-wrap justify-between gap-y-2">  <a href="/" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out"> <div class="flex flex-col"> <span class="font-semibold">Hossein</span> <span class="text-xs">AI System Design</span> </div> </a> <nav class="flex items-center gap-1 text-sm">  <a href="/portfolio" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Portfolio</a> <span>/</span> <a href="/writing" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Writing</a> <span>/</span> <a href="/workshop" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Workbench</a> <span>/</span> <a href="/work-with-me" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Work with me</a>  <span> / </span> <button id="magnifying-glass" aria-label="Search" class="border-muted/45 bg-ground hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex items-center rounded-sm border px-2 py-1 text-xs transition-colors duration-300 ease-in-out"> <svg height="16" stroke-linejoin="round" viewBox="0 0 16 16" width="16" style="color: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 7C3.5 5.067 5.067 3.5 7 3.5C8.933 3.5 10.5 5.067 10.5 7C10.5 7.88461 10.1718 8.69256 9.63058 9.30876L9.30876 9.63058C8.69256 10.1718 7.88461 10.5 7 10.5C5.067 10.5 3.5 8.933 3.5 7ZM9.96544 11.0261C9.13578 11.6382 8.11014 12 7 12C4.23858 12 2 9.76142 2 7C2 4.23858 4.23858 2 7 2C9.76142 2 12 4.23858 12 7C12 8.11014 11.6382 9.13578 11.0261 9.96544L14.0303 12.9697L14.5607 13.5L13.5 14.5607L12.9697 14.0303L9.96544 11.0261Z" fill="currentColor"></path></svg>
+&nbsp;Search
+</button> </nav> </div>  </div> </header> <main>  <div class="mx-auto px-3 max-w-(--measure)">  <div class="animate"> <a href="/writing" class="not-prose group border-muted/45 hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex w-fit flex-nowrap rounded-sm border px-3 py-1.5 transition-colors duration-300 ease-in-out"> <div class="text-sm"> Back to writing </div> </a> </div> <div class="my-10 space-y-1">  <div class="animate text-sm"> <time datetime="2026-09-06T00:00:00.000Z"> September 06, 2026 </time> </div> <h1 class="animate text-ink text-3xl font-semibold"> Hello World Again </h1> </div> <details open class="animate group border-muted/45 rounded-lg border"> <summary class="group-open:bg-ink/5 hover:bg-ink/5 cursor-pointer rounded-t-lg px-3 py-1.5 font-medium transition-colors">Table of Contents</summary> <nav> <ul class="py-3"> <li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#putting-it-all-together" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Putting It All Together</a>  </li><li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#the-role-of-the-internet-in-my-life" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">The Role of the Internet in My Life</a>  </li><li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#my-experience-of-the-internet-blackout" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">My Experience of the Internet Blackout</a>  </li><li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#possible-conclusion" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Possible Conclusion</a>  </li><li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#human-connection-to-the-world" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Human Connection to the World</a> <ul class="translate-x-3"> <li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#appendix" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Appendix</a>  </li><li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#silence-chamber" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Silence Chamber</a>  </li><li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#children-raised-in-isolation-from-human-interaction" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Children Raised in Isolation from Human Interaction</a>  </li><li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#human-language-as-our-evolved-operating-system" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Human Language as Our Evolved Operating System</a>  </li><li class="list-inside list-disc px-6 py-1.5 text-sm"> <a href="#arrival--2015" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Arrival — 2015</a>  </li> </ul> </li> </ul> </nav> </details><article class="animate"> <p>After experiencing about 100 days of <strong>Internet Blackout (IB)</strong>, my motivation for writing this post is to raise the following questions in your mind:</p>
+<ul>
+<li>
+<p><strong>Should you be more cautious about your relationship with the internet?</strong></p>
+</li>
+<li>
+<p><strong>What part of your being, as a human, is entangled with your daily digital experiences?</strong></p>
+</li>
+<li>
+<p><strong>Is internet blackout only a problem for Iranians, while the rest of the world will always remain safe from it?</strong></p>
+</li>
+</ul>
+<p>At the moment I am typing these words, I am not sure whether they will ever find their way to any possible audience in the future. Here, I want to share my experience of the internet blackout and the unexpected effects associated with it. Briefly, after around 400 hours, it started to become a form of mental torture: depression, psychological complications, and a sense of self-alienation began to appear. Keep in mind that I am not a social media addict; I usually check social media for only 5–10 minutes a day.</p>
+<h2 id="putting-it-all-together">Putting It All Together</h2>
+<p>Our experience of the present moment is not tied only to the exact second in which we are living. In fact, our feelings and state of mind have a dynamic continuity, carrying the effects of our experiences from previous days, months, and even years — as a matter of fact, from the day of our birth. Moreover, our state of mind and our emotions are deeply influenced by thoughts developed through human language. In this regard, when one has no human communication, the mind itself begins to change.</p>
+<h2 id="the-role-of-the-internet-in-my-life">The Role of the Internet in My Life</h2>
+<p>As someone who grew up in a relatively socially disadvantaged situation, I used to plan and navigate a path toward the future and success mostly alone. Regardless of the endless love, support, and satisfaction I have always received from my parents, pursuing higher education and practicing recent advances in engineering — especially AI — was not something my family had much idea about. Until I made my first salary or had my first Skype meeting with Europe and the U.S., they could not really believe that I had any valuable knowledge.</p>
+<p>As a result of the above-mentioned paradox in my background, I became a man thirsty for <strong>knowing what I should know</strong>. I developed a strategy of consuming more and more information from a fantastic open world called the <strong>internet</strong>, and processing it in my mind. I used to read, listen, and watch things from the internet almost every day of my life. As time went by, this routine naturally evolved, so that the content I looked for was not limited only to my professional field — AI and machine learning engineering. I also became curious about topics such as philosophy, sociology, complex systems, political science, strategy, management, and so on.</p>
+<p>Eventually, I became a man whose mindset, thoughts, and language were different from those of the people close to him. Fortunately, thanks to the thoughts I had developed during that time, I realized that trust and love are the principal languages I need in order to communicate with my beloved ones and friends. I could really enjoy communicating with them and being around them. However, because of the gaps I mentioned, only on rare occasions could I have an argument or conversation that allowed me to delve into my thoughts, beliefs, and the knowledge in my mind. My thirsty cognitive needs had always been satisfied through the internet.</p>
+<h2 id="my-experience-of-the-internet-blackout">My Experience of the Internet Blackout</h2>
+<p>During the first week, you are full of anger and frustration.</p>
+<p>During the second week, depression and low motivation for everything begin to appear — even for the things you had always wished to have free time to do.</p>
+<p>By the third week, you realize that your brain has become extremely foggy, to the point that you cannot even think clearly or make simple decisions.</p>
+<p>During the fourth week, you absolutely realize that you are literally not the same person you knew before. The best way I can explain my feeling during those days is to say: <strong>“I felt I was living a plant life.”</strong></p>
+<p>After the fifth week, almost all the anger had disappeared. I cannot even say that I was feeling depressed anymore. It was a very, very strange feeling of indifference toward almost everything. Even though I was not sad, thoughts of suicide came to my mind again and again. What frightened me was that this was a new experience: thinking of suicide while not feeling any drama or rush of emotion, almost as if it were a rational evaluation of whether or not to make a decision. I must mention that I did not use any medication that could affect my feelings or perceptions. It was simply the consequence of the changes in my lifestyle.</p>
+<p>These strange experiences and feelings made me think about them a lot. The only explanation that came to my mind was that all of this could perhaps be explained from the perspective of cognitive science. I will not go deeply into this, because it is not my field of specialty. I will only refer to several concepts in the appendix of this writing, which might help give an idea. Now, I really understand those who have experienced a “silence chamber,” children who grew up in isolation and behaved unlike ordinary humans, and what might happen to a human being if its operating system began to malfunction.</p>
+<h2 id="possible-conclusion">Possible Conclusion</h2>
+<p>I believe that our being is entangled with our experiences of the digital world far beyond the level we might imagine. Once that connection is cut off, crises begin to appear. Definitely, this differs from individual to individual, depending on what each person has been doing in the digital environment. Unfortunately, based on my observations and personal experiences during those days, those who consumed content mainly for entertainment seemed to be less damaged by this experience compared to those who satisfied their intellectual needs through the digital world.</p>
+<p>I believe that this is exactly the opposite of the common sense of the general population — and perhaps even of academia — where people often assume that the main challenge of the digitalization of human life is the way social networks entertain and distract people.</p>
+<p>I think that if, in some fictional doomsday scenario, or as a result of wars and the political motivations of world powers, the earth were one day to plunge into digital darkness, the rates of suicide and depression among those who had intellectual consumption from the digital world would be far higher than among those who used it mainly for entertainment. The digital world has enabled thinkers to find rare individuals like themselves across the world, and to satisfy their need for thought and communication. Once the digital world is cut off, their being is somehow cut off as well.</p>
+<p>Therefore, I think it is perhaps my duty to warn that such groups of people should at least be aware of this dependency. I believe this dependency cannot truly be felt unless one experiences such a catastrophe, and it is also often misunderstood by the general public.</p>
+<h2 id="human-connection-to-the-world">Human Connection to the World</h2>
+<h3 id="appendix">Appendix</h3>
+<p>Before I begin to describe what I faced during the internet blackout, I want to draw your attention to three different, yet not entirely unrelated, topics.</p>
+<h3 id="silence-chamber">Silence Chamber</h3>
+<p>If you have no background information in cognitive science, you might not know how important sensory input is for the functioning of the human brain — and how, through that functioning, it shapes our being. A method of torture that has been studied and developed by psychologists and intelligence services is to put a person in a box in which all sensory inputs are cut off: no sound, no light, no smell, the temperature set exactly to body temperature, the most comfortable body position, and no significant touch from any surface.</p>
+<p>Just imagine yourself in such a position. How long do you think it would take to lose your sense of time? What input or trigger would your mind have in order to start processing thoughts? When I imagine this, I guess one might even lose the sense of the self. In any case, studies have shown that almost all of us, sooner or later, would end up losing our mental stability in such a situation.</p>
+<p>Now that we have discussed this, it might also be worth mentioning the noble-minded German idealist philosophers who argued about whether our thoughts are anything beyond the reflection of our experiences.</p>
+<h3 id="children-raised-in-isolation-from-human-interaction">Children Raised in Isolation from Human Interaction</h3>
+<p>This is a topic that contains both shadows of conspiracy and elements of scientific study. Throughout history, there have been several examples of individuals who were found not to have been raised by any human parent, usually as a consequence of war or human crisis. Observations of these individuals showed that they had a very low level of intelligence. Apparently, in some respects, they behaved like animals — for example, showing signs of anger or fear when meeting new humans. Because of human rights concerns, the study and examination of this topic has been limited.</p>
+<h3 id="human-language-as-our-evolved-operating-system">Human Language as Our Evolved Operating System</h3>
+<p>This is an idea discussed in an article published in <em>The Economist</em> by Yuval Noah Harari. Although the main topic of the article is the risk of AI controlling human civilization, in order to support his argument, Harari explains aspects of the functionality of human language in our civilization. As he mentions, language is a principal software that an individual inherits from society, and it shapes the way he or she thinks and knows the world.</p>
+<h3 id="arrival--2015"><em>Arrival</em> — 2015</h3>
+<p><em>Arrival</em> is a movie that tells the story of the arrival of strange entities on earth. Later, it is discovered that these entities are aliens who experience time differently. They give human beings a powerful gift so that humanity can save those aliens in the future. Surprisingly, this powerful gift is a new language, one more capable and complex than ours. This language is expected to enable human beings to think and communicate more efficiently.</p> <div class="mt-24"> <nav class="grid grid-cols-2 gap-1.5 sm:gap-3"> <div></div> <div></div> </nav> </div> <div class="mt-24">  </div> </article>  </div>  </main> <footer class="animate"> <div class="mx-auto px-3 max-w-(--measure)">  <div class="relative"> <div class="absolute -top-12 right-0"> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{const o=window.matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:0,behavior:o?"auto":"smooth"})})});</script> <button id="back-to-top" class="group border-muted/45 hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex w-fit flex-nowrap rounded-sm border px-3 py-1.5 transition-colors duration-300 ease-in-out"> <div class="text-sm">Back to top</div> </button> </div> </div> <div class="flex items-center justify-between"> <div class="flex flex-wrap items-center gap-x-2 gap-y-1"> <span>&copy; 2026 • Hossein</span> <a href="/manifesto" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Manifesto</a><a href="/rss.xml" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">RSS</a> </div> <div class="flex flex-wrap items-center gap-1.5"> <button id="light-theme-button" aria-label="Light theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> <button id="dark-theme-button" aria-label="Dark theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> <button id="system-theme-button" aria-label="System theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect> <line x1="8" y1="21" x2="16" y2="21"></line> <line x1="12" y1="17" x2="12" y2="21"></line> </svg> </button> </div> </div>  </div> </footer> <aside data-pagefind-ignore> <div id="backdrop" class="bg-[rgba(0, 0, 0, 0.5] invisible fixed top-0 left-0 z-50 flex h-screen w-full justify-center p-6 backdrop-blur-xs" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="border-muted/45 bg-ground m-0 flex h-fit max-h-[80%] w-full max-w-(--breakpoint-sm) flex-col overflow-auto rounded-sm border p-2 px-4 py-3 shadow-lg"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&#34;showImages&#34;:false,&#34;excerptLength&#34;:15,&#34;resetStyles&#34;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="mr-2 pt-4 pb-1 text-right text-xs">
+Press <span class="prose text-xs"><kbd class="">Esc</kbd></span> or click
+        anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

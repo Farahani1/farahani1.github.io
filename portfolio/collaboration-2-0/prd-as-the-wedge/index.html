@@ -1,0 +1,435 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!--
+  Favicon: the شاه calligraphy, ink #3A2A1E on ground #E9DFC9 so it reads
+  against both light and dark browser chrome. The .ico carries 16/32/48.
+  See docs/art-direction.md — no pure black, no pure white, no emoji.
+--><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.1.3"><!-- Canonical URL --><link rel="canonical" href="https://farahani1.github.io/portfolio/collaboration-2-0/prd-as-the-wedge/"><!-- Primary Meta Tags --><title>What gets discussed — the PRD | Hossein</title><meta name="title" content="What gets discussed — the PRD | Hossein"><meta name="description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://farahani1.github.io/portfolio/collaboration-2-0/prd-as-the-wedge/"><meta property="og:title" content="What gets discussed — the PRD | Hossein"><meta property="og:description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><meta property="og:image" content="https://farahani1.github.io/og.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://farahani1.github.io/portfolio/collaboration-2-0/prd-as-the-wedge/"><meta property="twitter:title" content="What gets discussed — the PRD | Hossein"><meta property="twitter:description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><meta property="twitter:image" content="https://farahani1.github.io/og.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    updateThemeButtons();
+    addCopyCodeButtons();
+    setGiscusTheme();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    const lightThemeButton = document.getElementById("light-theme-button");
+    lightThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "light");
+      toggleTheme(false);
+      updateThemeButtons();
+    });
+
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    darkThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "dark");
+      toggleTheme(true);
+      updateThemeButtons();
+    });
+
+    const systemThemeButton = document.getElementById("system-theme-button");
+    systemThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "system");
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      updateThemeButtons();
+    });
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (event) => {
+        if (localStorage.theme === "system") {
+          toggleTheme(event.matches);
+        }
+      });
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function updateThemeButtons() {
+    const theme = localStorage.getItem("theme");
+    const lightThemeButton = document.getElementById("light-theme-button");
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    const systemThemeButton = document.getElementById("system-theme-button");
+
+    function removeActiveButtonTheme(button) {
+      // One token, both modes — bg-ink/5 resolves per theme now.
+      button?.classList.remove("bg-ink/5");
+    }
+
+    function addActiveButtonTheme(button) {
+      button?.classList.add("bg-ink/5");
+    }
+
+    removeActiveButtonTheme(lightThemeButton);
+    removeActiveButtonTheme(darkThemeButton);
+    removeActiveButtonTheme(systemThemeButton);
+
+    if (theme === "light") {
+      addActiveButtonTheme(lightThemeButton);
+    } else if (theme === "dark") {
+      addActiveButtonTheme(darkThemeButton);
+    } else {
+      addActiveButtonTheme(systemThemeButton);
+    }
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+    // The CSS already forces these visible under reduced motion; skipping
+    // the timer as well means no staggered class churn either.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    animateElements.forEach((element, index) => {
+      if (reduce) {
+        element.classList.add("show");
+        return;
+      }
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    // CSS cannot reach a scroll behaviour set in JS, so check here too.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({
+      top: 0,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+
+    setGiscusTheme();
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    // Text, not emoji: docs/art-direction.md bans emoji as iconography.
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "Copied";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  const setGiscusTheme = () => {
+    const giscus = document.querySelector(".giscus-frame");
+
+    const isDark = document.documentElement.classList.contains("dark");
+
+    if (giscus) {
+      const url = new URL(giscus.src);
+      url.searchParams.set("theme", isDark ? "dark" : "light");
+      giscus.src = url.toString();
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.B6ZjduXn.css">
+<style>a[data-astro-cid-hh67uq7u][aria-current=location]{color:var(--ink);font-weight:700}a[data-astro-cid-hh67uq7u][aria-current=location]:before{content:"";position:absolute;left:-14.5px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--flow)}
+</style></head> <body> <noscript> <style>
+        .animate {
+          opacity: 1;
+          translate: var(--tw-translate-x) calc(var(--spacing) * 0);
+        }
+      </style> </noscript> <header data-astro-transition-persist="astro-l7r54iwe-1"> <div class="mx-auto px-3 max-w-[820px]">  <div class="flex flex-wrap justify-between gap-y-2">  <a href="/" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out"> <div class="flex flex-col"> <span class="font-semibold">Hossein</span> <span class="text-xs">AI System Design</span> </div> </a> <nav class="flex items-center gap-1 text-sm">  <a href="/portfolio" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Portfolio</a> <span>/</span> <a href="/writing" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Writing</a> <span>/</span> <a href="/workshop" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Workbench</a> <span>/</span> <a href="/work-with-me" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Work with me</a>  <span> / </span> <button id="magnifying-glass" aria-label="Search" class="border-muted/45 bg-ground hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex items-center rounded-sm border px-2 py-1 text-xs transition-colors duration-300 ease-in-out"> <svg height="16" stroke-linejoin="round" viewBox="0 0 16 16" width="16" style="color: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 7C3.5 5.067 5.067 3.5 7 3.5C8.933 3.5 10.5 5.067 10.5 7C10.5 7.88461 10.1718 8.69256 9.63058 9.30876L9.30876 9.63058C8.69256 10.1718 7.88461 10.5 7 10.5C5.067 10.5 3.5 8.933 3.5 7ZM9.96544 11.0261C9.13578 11.6382 8.11014 12 7 12C4.23858 12 2 9.76142 2 7C2 4.23858 4.23858 2 7 2C9.76142 2 12 4.23858 12 7C12 8.11014 11.6382 9.13578 11.0261 9.96544L14.0303 12.9697L14.5607 13.5L13.5 14.5607L12.9697 14.0303L9.96544 11.0261Z" fill="currentColor"></path></svg>
+&nbsp;Search
+</button> </nav> </div>  </div> </header> <main> <div class="mx-auto flex max-w-[1340px] flex-wrap items-start gap-x-9 px-4 pb-24"><aside class="order-1 w-full shrink-0 self-start py-2 lg:sticky lg:top-24 lg:w-[262px]"><div class="border-ink/15 max-h-[calc(100vh-8rem)] overflow-y-auto pb-4 lg:border-r lg:pr-5"><nav aria-label="Pages in this project" class="text-ink/75"> <p class="text-quiet border-ink/15 mb-3.5 border-b pb-2.5 font-mono text-[10.5px] tracking-[0.1em] uppercase">
+In this project
+</p> <a href="/portfolio/collaboration-2-0" class="mb-1 flex items-center justify-between gap-2 border-l-2 py-1.5 pr-1 pl-2.5 text-[15.5px] leading-tight font-semibold no-underline transition-colors border-ink/25 text-ink hover:bg-ink/5"> Collaboration 2.0 — R&amp;D Operating Model </a>  <ul class="border-ink/15 ml-2.5 list-none border-l pl-0"> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Modeling and diagnosis </li><li> <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Symptoms and diagnosis </a> </li> <li> <a href="/portfolio/collaboration-2-0/clues-root-causes" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Clues — where the regress terminates </a> </li> <li> <a href="/portfolio/collaboration-2-0/disclaimers" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Disclaimers </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Solution — Collaboration 2.0 </li><li> <a href="/portfolio/collaboration-2-0/a-new-lens" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> A new lens — the organization as a complex system </a> </li> <li> <a href="/portfolio/collaboration-2-0/approach" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The approach — Collaboration 2.0 </a> </li> <script type="module">const l=document.querySelector("[data-on-this-page]");if(l){const e=new Map;for(const t of l.querySelectorAll("[data-toc-link]"))e.set(t.dataset.tocLink,t);const i=[...e.keys()].map(t=>document.getElementById(t)).filter(t=>t!==null);let n=null;const r=()=>{let t=i.length?i[0].id:null;for(const o of i)if(o.getBoundingClientRect().top<=120)t=o.id;else break;t!==n&&(n&&e.get(n)?.removeAttribute("aria-current"),t&&e.get(t)?.setAttribute("aria-current","location"),n=t)};window.addEventListener("scroll",r,{passive:!0}),r()}</script><li> <a href="/portfolio/collaboration-2-0/prd-as-the-wedge" aria-current="page" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors border-accent text-accent bg-accent/10 font-semibold" style="padding-left: 12px"> What gets discussed — the PRD </a> </li> <li> <nav aria-label="On this page" data-on-this-page class="border-flow/45 mt-1 mb-2 ml-3 border-l-2 pl-2.5" data-astro-cid-hh67uq7u><p class="text-quiet mb-1 font-mono text-[9.5px] tracking-[0.11em] uppercase" data-astro-cid-hh67uq7u>
+On this page
+</p><ul class="list-none p-0" data-astro-cid-hh67uq7u><li data-astro-cid-hh67uq7u><a href="#23--what-gets-discussed-on-the-platform--the-prd" data-toc-link="23--what-gets-discussed-on-the-platform--the-prd" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-ink text-[13.5px] font-semibold" style="padding-left: 4px" data-astro-cid-hh67uq7u>2.3 · What gets discussed on the platform — the PRD</a></li><li data-astro-cid-hh67uq7u><a href="#231--why-a-document-and-why-this-one" data-toc-link="231--why-a-document-and-why-this-one" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[13px]" style="padding-left: 15px" data-astro-cid-hh67uq7u>2.3.1 · Why a document, and why this one</a></li><li data-astro-cid-hh67uq7u><a href="#232--the-decision--attach-the-reform-to-an-artifact-not-to-the-culture" data-toc-link="232--the-decision--attach-the-reform-to-an-artifact-not-to-the-culture" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[13px]" style="padding-left: 15px" data-astro-cid-hh67uq7u>2.3.2 · The decision — attach the reform to an artifact, not to the culture</a></li></ul></nav> </li><li> <a href="/portfolio/collaboration-2-0/authoring-process-and-roles" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The collaborative authoring process </a> </li> <li> <a href="/portfolio/collaboration-2-0/adoption" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The adoption argument </a> </li> <li> <a href="/portfolio/collaboration-2-0/measurement-and-refinement" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Measurement, feedback and refinement </a> </li> <li> <a href="/portfolio/collaboration-2-0/what-would-have-come-next" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> What would have come next </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Ending </li><li> <a href="/portfolio/collaboration-2-0/results-and-reflection" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Status, outcome and reflection </a> </li> <li> <a href="/portfolio/collaboration-2-0/artifacts" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Artifacts </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Appendix </li><li> <a href="/portfolio/collaboration-2-0/intellectual-assets-evidence" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Evidence — the intellectual-assets analysis </a> </li> <li> <a href="/portfolio/collaboration-2-0/strategy" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The phased strategy </a> </li> <li> <a href="/portfolio/collaboration-2-0/survey-analysis" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The survey — instrument, results and reading </a> </li>  </ul> </nav></div></aside><div class="order-2 min-w-0 flex-1 basis-[440px]"><nav aria-label="Breadcrumb" class="mb-6"> <ol class="text-quiet flex list-none flex-wrap items-center gap-x-1.5 gap-y-1 p-0 font-mono text-[11px] tracking-[0.06em] uppercase"> <li class="flex items-center gap-1.5"> <a href="/portfolio" class="hover:text-ink no-underline"> Portfolio </a> <span aria-hidden="true">›</span> </li><li class="flex items-center gap-1.5"> <a href="/portfolio/collaboration-2-0" class="hover:text-ink no-underline"> Collaboration 2.0 — R&amp;D Operating Model </a> <span aria-hidden="true">›</span> </li> <li class="text-accent" aria-current="page">What gets discussed — the PRD</li> </ol> </nav><div class="animate space-y-1"><h1 class="text-ink text-3xl font-semibold">What gets discussed — the PRD</h1></div><article class="animate article-wide mt-8"><p><a href="/portfolio">← Portfolio</a> · <a href="/portfolio/collaboration-2-0">← Collaboration 2.0</a></p>
+<h2 id="23--what-gets-discussed-on-the-platform--the-prd">2.3 · What gets discussed on the platform — the PRD</h2>
+<p><strong>Sub-sections:</strong> <a href="#231--why-a-document-and-why-this-one">2.3.1 Why a document, and why this one</a> · <a href="#232--the-decision--attach-the-reform-to-an-artifact-not-to-the-culture">2.3.2 The decision — an artifact, not the culture</a></p>
+<hr>
+<h3 id="231--why-a-document-and-why-this-one">2.3.1 · Why a document, and why this one</h3>
+<blockquote>
+<p>[!Warning] Note
+Here is a claim I should disclaim. What needs to be discussed, and how it should be
+discussed, were never two separate things in my mind. Here I found it easier to argue them
+one after the other. In fact I think the entanglement of those two questions is behind some
+of the confusion when people think about the problems in an organization.</p>
+</blockquote>
+<p>So far I have explained the framework within which individuals do part of their communicating.
+But I have not said what to discuss there. It is the product. Not the technical details — a
+picture of it. What should it be? What should it be able to do?</p>
+<p>Immediately after you answer those, the harder question arrives: <strong>why? so what?</strong> Those two
+tough questions make everybody who wants to answer them sweat. Because the answer has to
+convince the audience that the product will sell, or more broadly that it leads to profit or to
+a strategic goal in the short or the long term. Someone might try to escape by pointing at
+long-term views or strategic aspects of the product — and I would still catch you. <em>Where is
+that strategy? Where is it written down?</em></p>
+<p>Imagine a front-end developer, or someone whose speciality is electronics, who has been sitting
+in many meetings deciding how an IoT system or a software dashboard for managing an
+agricultural system should work. Now, who takes responsibility for answering those two tough
+questions on a recorded, transparent, shared platform?</p>
+<p>I know my tone in those lines is as tough as the questions are. My intention has never been to
+push anyone, to embarrass anyone, or to prove that somebody lacks expertise. But if those
+questions are not carefully thought through, I believe the whole organization sooner or later
+faces a more painful outcome. Bringing the whole argument about the product online helps
+everyone arrive naturally at the consensus that there should be a clear target market, and a
+declared plan and strategy.</p>
+<p>So the framework needed a way in: one thing the organization already did, chosen so that
+following the new rules and doing the job are the same act. The choice was the <strong>Product
+Requirement Document</strong>.</p>
+<p>For the content of the PRD itself I followed <a href="https://www.udemy.com/share/10c5Rt/">this
+course</a>, which fitted my style well. What I liked is the
+instructor’s consistent emphasis on how collaboratively a PRD must be developed, and on a PRD
+never being the final truth — it is, at any moment, the current source of truth. I am not going
+to explain what a PRD is or should be. There is plenty of material on that. What matters here
+is the reframing:</p>
+<blockquote>
+<p><strong>PRD = a document + the process that produces it.</strong></p>
+</blockquote>
+<p>Almost all the value is in the second half. The document is the pretext.</p>
+<p><strong>Why this one.</strong> Four things made the PRD the right carrier.</p>
+<ul>
+<li><strong>It was already needed, and already missing.</strong> Nobody had to be talked into the idea that a
+product should be defined before it is built. The reform arrived as a favour, not as a demand.</li>
+<li><strong>It sits on the routes rather than inside a cluster.</strong> To write a PRD you need the market
+view, the domain knowledge, the system design and the build constraints in one place at one
+time. That turns the <strong>structure ↔ market</strong> pair of crossings into a scheduled activity. Those
+are the two along which disconnected market work lands on engineers as work with no visible
+point, and decisions taken above the available information come back as goals nobody can act
+on. It also touches <strong>structure → culture</strong>, because what turns a technical objection into a
+political one is having nowhere to put it — and the authoring process is somewhere to put it.</li>
+<li><strong>It makes people take part without anyone insisting.</strong> A PRD that no domain expert reviewed
+is visibly unfinished. You can check whether a section is empty. You cannot check whether
+someone is enthusiastic.</li>
+<li><strong>It is anchored to a recognised standard.</strong> Putting it inside the ISO/IEC/IEEE 15288 system
+life cycle — concept definition, systems engineering, deployment and use — made it look like
+compliance rather than like a management fashion. In a conservative engineering organization,
+a standard is a shield.</li>
+<li><strong>It bends.</strong> There is no global standard for a PRD, and the course material is consistent
+that it should not be treated as a rigid form. My template says as much to the author in
+plain words: adapt the structure to your own product or service. That flexibility is part of
+the mechanism, not a weakness in it. A rigid template handed down from above would have
+produced exactly the resistance the reform was built to avoid.</li>
+</ul>
+<p><strong>And one route it does not touch.</strong> The fourth crossing is <strong>culture → structure</strong>, where
+restrictive norms hold down the participation that would relieve the bottleneck. No PRD-shaped
+activity sits on it. Nothing in the authoring process obliges anyone to loosen a norm.</p>
+<p>So the wedge was chosen for three routes out of four, knowingly. The fourth is where the reform
+is most exposed.
+<a href="#232--the-decision--attach-the-reform-to-an-artifact-not-to-the-culture">2.3.2</a> below
+says the same thing from the other side.</p>
+<p><strong>Templates were created</strong> — a general one, and a domain-specialised one. I am not going to
+reproduce the section list here. Two things about them matter here. First, each section
+was chosen so that it drags a different group to the table: a market objective stated as a
+number somebody has to defend, a prioritised feature list that makes a roadmap something you
+<em>derive</em> rather than assert, functional requirements only domain experts can fill in. Second, to
+avoid running two parallel documentation efforts, we folded components normally found in a
+<strong>BRD</strong> — a business requirements document — into what we still called the PRD.</p>
+<p>That fold does more than save a document. The questions it brings in cannot be answered without
+a strategy standing behind them. What does this cost? What is the sales plan? Why this product
+before the other options on the table? Is the return we expect short term, long term, or
+reputational rather than financial? Nobody can answer that last one honestly without saying
+what the company is trying to do.</p>
+<p>So the PRD does not solve the strategy problem. It <strong>necessitates</strong> a strategy, by making its
+absence visible the moment somebody sits down to fill in the template.</p>
+<p>The template lives at <a href="/portfolio/_assets/PRD-template.md"><code>_assets/PRD-template.md</code></a>.</p>
+<p><strong>A domain-specialised variant.</strong> For the condition-monitoring product line there was a
+specialised template, and how it is split matters more than the template itself:</p>
+<ul>
+<li><strong>Problem domain</strong> — filled in by whoever proposed the project.</li>
+<li><strong>Solution domain, algorithmic</strong> — filled in by the team building the computational modules.</li>
+<li><strong>Solution domain, production</strong> — filled in by the software team.</li>
+<li><strong>Claims and disclaimers</strong> — <em>agreed by every expert and lead involved.</em></li>
+</ul>
+<p>The disclaimer section needs every participating expert to agree. It is the one place where an
+engineer can write down what the product does <strong>not</strong> do, and have the organization sign next to
+it. The obstacle tables behind the strategy-and-market cluster record a habit of assuming an
+idea will work because it is ours. A disclaimer that is mandatory, and signed by consensus, is
+aimed straight at that habit.</p>
+<hr>
+<h3 id="232--the-decision--attach-the-reform-to-an-artifact-not-to-the-culture">2.3.2 · The decision — attach the reform to an artifact, not to the culture</h3>
+<p><strong>The decision.</strong> Deliver transparency, distributed decision-making and traceable
+accountability as properties of how one document gets written. Not as a change programme with
+those three things as its stated goals.</p>
+<p><strong>The alternative not taken.</strong> The usual intervention: a culture and communication programme.
+Workshops, a values statement, revised reporting lines, a commitment from management to be more
+open. Aim at the behaviour directly.</p>
+<p><strong>Why the alternative was rejected.</strong> Three reasons, weakest first.</p>
+<p><em>Nothing forces it to happen.</em> Going to a workshop does not change what the work requires. The
+next day, the same decision reaches the same desk by the same route.</p>
+<p><em>It reads as politics.</em> Where authority and responsibility have come apart at the top
+(<a href="/portfolio/collaboration-2-0/clues-root-causes">1.2</a>), disagreeing with a plan
+and being disloyal to a person start to look the same. Now run a programme whose stated subject
+is how people deal with authority. People will read it as a move in that fight, not as a repair
+to it. What the programme actually contains makes no difference to that reading.</p>
+<p><em>It gives an order to something that does not take orders.</em> This is the systems argument from
+<a href="/portfolio/collaboration-2-0/a-new-lens#213--from-a-model-to-a-point-of-intervention">2.1.3</a>,
+and it is the
+one that settled it. Trust, openness and accountability come out of how people deal with each
+other. Set the right local rules and you can produce them. Issue them as an instruction and you
+cannot. Tell people to be transparent and you get the <em>performance</em> of transparency, which is
+worse than the state you started in, because now it is harder to see.</p>
+<p>There is a fourth way to say the same thing, and the diagnosis supplies it. A culture programme
+aims at a <strong>cluster</strong> — the culture-and-norms cluster, in the terms of
+<a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">1.1.5</a>. But no cluster holds
+itself up. Each one is held in place by the routes running into it from the other two. So an
+intervention aimed at a cluster gets absorbed.</p>
+<p>That is not a prediction. It is the recorded history of every reorganisation and every values
+statement the division had already tried.</p>
+<p><strong>What the decision cost.</strong> It is slower, and it works at one remove. The culture change is a
+downstream effect, so a sceptical stakeholder is being asked to accept a chain of reasoning
+instead of a deliverable.</p>
+<p>It also limits the reform to whatever the document touches, and that boundary can now be drawn
+precisely rather than waved at:</p>
+<ul>
+<li><strong>By decision type:</strong> budget, promotion, hiring and strategic direction almost never pass
+through a PRD. Those are the decisions that did the most damage.</li>
+<li><strong>By route:</strong> the wedge sits on three of the four crossings, not on the fourth
+(<a href="#231--why-a-document-and-why-this-one">2.3.1</a>). Nothing in a
+PRD workflow obliges anyone to loosen a restrictive norm, so the culture → structure route
+keeps running.</li>
+</ul>
+<p>Both limits are real, and together they are the honest boundary of the whole intervention.
+They are also why <a href="/portfolio/collaboration-2-0/strategy">4.2</a> exists. The strategy had to carry what the
+document could not reach.</p>
+<hr>
+<p>⟵ <a href="/portfolio/collaboration-2-0">Up: Collaboration 2.0</a> · Previous: <a href="/portfolio/collaboration-2-0/approach">2.2 · The approach — Collaboration 2.0</a> · Next: <a href="/portfolio/collaboration-2-0/authoring-process-and-roles">2.4 · The collaborative authoring process →</a></p></article></div></div> </main> <footer class="animate"> <div class="mx-auto px-3 max-w-(--measure)">  <div class="relative"> <div class="absolute -top-12 right-0"> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{const o=window.matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:0,behavior:o?"auto":"smooth"})})});</script> <button id="back-to-top" class="group border-muted/45 hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex w-fit flex-nowrap rounded-sm border px-3 py-1.5 transition-colors duration-300 ease-in-out"> <div class="text-sm">Back to top</div> </button> </div> </div> <div class="flex items-center justify-between"> <div class="flex flex-wrap items-center gap-x-2 gap-y-1"> <span>&copy; 2026 • Hossein</span> <a href="/manifesto" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Manifesto</a><a href="/rss.xml" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">RSS</a> </div> <div class="flex flex-wrap items-center gap-1.5"> <button id="light-theme-button" aria-label="Light theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> <button id="dark-theme-button" aria-label="Dark theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> <button id="system-theme-button" aria-label="System theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect> <line x1="8" y1="21" x2="16" y2="21"></line> <line x1="12" y1="17" x2="12" y2="21"></line> </svg> </button> </div> </div>  </div> </footer> <aside data-pagefind-ignore> <div id="backdrop" class="bg-[rgba(0, 0, 0, 0.5] invisible fixed top-0 left-0 z-50 flex h-screen w-full justify-center p-6 backdrop-blur-xs" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="border-muted/45 bg-ground m-0 flex h-fit max-h-[80%] w-full max-w-(--breakpoint-sm) flex-col overflow-auto rounded-sm border p-2 px-4 py-3 shadow-lg"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&#34;showImages&#34;:false,&#34;excerptLength&#34;:15,&#34;resetStyles&#34;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="mr-2 pt-4 pb-1 text-right text-xs">
+Press <span class="prose text-xs"><kbd class="">Esc</kbd></span> or click
+        anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

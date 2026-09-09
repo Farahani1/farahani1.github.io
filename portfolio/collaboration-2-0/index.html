@@ -1,0 +1,557 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!--
+  Favicon: the شاه calligraphy, ink #3A2A1E on ground #E9DFC9 so it reads
+  against both light and dark browser chrome. The .ico carries 16/32/48.
+  See docs/art-direction.md — no pure black, no pure white, no emoji.
+--><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.1.3"><!-- Canonical URL --><link rel="canonical" href="https://farahani1.github.io/portfolio/collaboration-2-0/"><!-- Primary Meta Tags --><title>Collaboration 2.0 — R&amp;D Operating Model | Hossein</title><meta name="title" content="Collaboration 2.0 — R&#38;D Operating Model | Hossein"><meta name="description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://farahani1.github.io/portfolio/collaboration-2-0/"><meta property="og:title" content="Collaboration 2.0 — R&#38;D Operating Model | Hossein"><meta property="og:description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><meta property="og:image" content="https://farahani1.github.io/og.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://farahani1.github.io/portfolio/collaboration-2-0/"><meta property="twitter:title" content="Collaboration 2.0 — R&#38;D Operating Model | Hossein"><meta property="twitter:description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><meta property="twitter:image" content="https://farahani1.github.io/og.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    updateThemeButtons();
+    addCopyCodeButtons();
+    setGiscusTheme();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    const lightThemeButton = document.getElementById("light-theme-button");
+    lightThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "light");
+      toggleTheme(false);
+      updateThemeButtons();
+    });
+
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    darkThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "dark");
+      toggleTheme(true);
+      updateThemeButtons();
+    });
+
+    const systemThemeButton = document.getElementById("system-theme-button");
+    systemThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "system");
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      updateThemeButtons();
+    });
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (event) => {
+        if (localStorage.theme === "system") {
+          toggleTheme(event.matches);
+        }
+      });
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function updateThemeButtons() {
+    const theme = localStorage.getItem("theme");
+    const lightThemeButton = document.getElementById("light-theme-button");
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    const systemThemeButton = document.getElementById("system-theme-button");
+
+    function removeActiveButtonTheme(button) {
+      // One token, both modes — bg-ink/5 resolves per theme now.
+      button?.classList.remove("bg-ink/5");
+    }
+
+    function addActiveButtonTheme(button) {
+      button?.classList.add("bg-ink/5");
+    }
+
+    removeActiveButtonTheme(lightThemeButton);
+    removeActiveButtonTheme(darkThemeButton);
+    removeActiveButtonTheme(systemThemeButton);
+
+    if (theme === "light") {
+      addActiveButtonTheme(lightThemeButton);
+    } else if (theme === "dark") {
+      addActiveButtonTheme(darkThemeButton);
+    } else {
+      addActiveButtonTheme(systemThemeButton);
+    }
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+    // The CSS already forces these visible under reduced motion; skipping
+    // the timer as well means no staggered class churn either.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    animateElements.forEach((element, index) => {
+      if (reduce) {
+        element.classList.add("show");
+        return;
+      }
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    // CSS cannot reach a scroll behaviour set in JS, so check here too.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({
+      top: 0,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+
+    setGiscusTheme();
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    // Text, not emoji: docs/art-direction.md bans emoji as iconography.
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "Copied";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  const setGiscusTheme = () => {
+    const giscus = document.querySelector(".giscus-frame");
+
+    const isDark = document.documentElement.classList.contains("dark");
+
+    if (giscus) {
+      const url = new URL(giscus.src);
+      url.searchParams.set("theme", isDark ? "dark" : "light");
+      giscus.src = url.toString();
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.B6ZjduXn.css">
+<style>a[data-astro-cid-hh67uq7u][aria-current=location]{color:var(--ink);font-weight:700}a[data-astro-cid-hh67uq7u][aria-current=location]:before{content:"";position:absolute;left:-14.5px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--flow)}
+</style></head> <body> <noscript> <style>
+        .animate {
+          opacity: 1;
+          translate: var(--tw-translate-x) calc(var(--spacing) * 0);
+        }
+      </style> </noscript> <header data-astro-transition-persist="astro-l7r54iwe-1"> <div class="mx-auto px-3 max-w-[820px]">  <div class="flex flex-wrap justify-between gap-y-2">  <a href="/" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out"> <div class="flex flex-col"> <span class="font-semibold">Hossein</span> <span class="text-xs">AI System Design</span> </div> </a> <nav class="flex items-center gap-1 text-sm">  <a href="/portfolio" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Portfolio</a> <span>/</span> <a href="/writing" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Writing</a> <span>/</span> <a href="/workshop" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Workbench</a> <span>/</span> <a href="/work-with-me" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Work with me</a>  <span> / </span> <button id="magnifying-glass" aria-label="Search" class="border-muted/45 bg-ground hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex items-center rounded-sm border px-2 py-1 text-xs transition-colors duration-300 ease-in-out"> <svg height="16" stroke-linejoin="round" viewBox="0 0 16 16" width="16" style="color: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 7C3.5 5.067 5.067 3.5 7 3.5C8.933 3.5 10.5 5.067 10.5 7C10.5 7.88461 10.1718 8.69256 9.63058 9.30876L9.30876 9.63058C8.69256 10.1718 7.88461 10.5 7 10.5C5.067 10.5 3.5 8.933 3.5 7ZM9.96544 11.0261C9.13578 11.6382 8.11014 12 7 12C4.23858 12 2 9.76142 2 7C2 4.23858 4.23858 2 7 2C9.76142 2 12 4.23858 12 7C12 8.11014 11.6382 9.13578 11.0261 9.96544L14.0303 12.9697L14.5607 13.5L13.5 14.5607L12.9697 14.0303L9.96544 11.0261Z" fill="currentColor"></path></svg>
+&nbsp;Search
+</button> </nav> </div>  </div> </header> <main> <div class="mx-auto flex max-w-[1340px] flex-wrap items-start gap-x-9 px-4 pb-24"><aside class="order-1 w-full shrink-0 self-start py-2 lg:sticky lg:top-24 lg:w-[262px]"><div class="border-ink/15 max-h-[calc(100vh-8rem)] overflow-y-auto pb-4 lg:border-r lg:pr-5"><nav aria-label="Pages in this project" class="text-ink/75"> <p class="text-quiet border-ink/15 mb-3.5 border-b pb-2.5 font-mono text-[10.5px] tracking-[0.1em] uppercase">
+In this project
+</p> <a href="/portfolio/collaboration-2-0" aria-current="page" class="mb-1 flex items-center justify-between gap-2 border-l-2 py-1.5 pr-1 pl-2.5 text-[15.5px] leading-tight font-semibold no-underline transition-colors border-accent text-accent bg-accent/10"> Collaboration 2.0 — R&amp;D Operating Model </a> <nav aria-label="On this page" data-on-this-page class="border-flow/45 mt-1 mb-2 ml-3 border-l-2 pl-2.5" data-astro-cid-hh67uq7u><p class="text-quiet mb-1 font-mono text-[9.5px] tracking-[0.11em] uppercase" data-astro-cid-hh67uq7u>
+On this page
+</p><ul class="list-none p-0" data-astro-cid-hh67uq7u><li data-astro-cid-hh67uq7u><a href="#redesigning-how-a-100-person-rd-division-decides-things" data-toc-link="redesigning-how-a-100-person-rd-division-decides-things" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[13px]" style="padding-left: 15px" data-astro-cid-hh67uq7u>Redesigning how a 100-person R&amp;D division decides things</a></li><li data-astro-cid-hh67uq7u><a href="#background-story" data-toc-link="background-story" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-ink text-[13.5px] font-semibold" style="padding-left: 4px" data-astro-cid-hh67uq7u>Background Story</a></li><li data-astro-cid-hh67uq7u><a href="#background-context" data-toc-link="background-context" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[13px]" style="padding-left: 15px" data-astro-cid-hh67uq7u>Background Context</a></li><li data-astro-cid-hh67uq7u><a href="#what-did-i-do" data-toc-link="what-did-i-do" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-ink text-[13.5px] font-semibold" style="padding-left: 4px" data-astro-cid-hh67uq7u>What did I do?</a></li><li data-astro-cid-hh67uq7u><a href="#diagnosis" data-toc-link="diagnosis" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[12.5px]" style="padding-left: 26px" data-astro-cid-hh67uq7u>Diagnosis</a></li><li data-astro-cid-hh67uq7u><a href="#intervention" data-toc-link="intervention" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[12.5px]" style="padding-left: 26px" data-astro-cid-hh67uq7u>Intervention</a></li><li data-astro-cid-hh67uq7u><a href="#figure-1--my-diagnosis-and-design-process" data-toc-link="figure-1--my-diagnosis-and-design-process" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[13px]" style="padding-left: 15px" data-astro-cid-hh67uq7u>Figure 1 · My diagnosis and design process</a></li><li data-astro-cid-hh67uq7u><a href="#contents" data-toc-link="contents" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-ink text-[13.5px] font-semibold" style="padding-left: 4px" data-astro-cid-hh67uq7u>Contents</a></li><li data-astro-cid-hh67uq7u><a href="#figures" data-toc-link="figures" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[13px]" style="padding-left: 15px" data-astro-cid-hh67uq7u>Figures</a></li></ul></nav><script type="module">const l=document.querySelector("[data-on-this-page]");if(l){const e=new Map;for(const t of l.querySelectorAll("[data-toc-link]"))e.set(t.dataset.tocLink,t);const i=[...e.keys()].map(t=>document.getElementById(t)).filter(t=>t!==null);let n=null;const r=()=>{let t=i.length?i[0].id:null;for(const o of i)if(o.getBoundingClientRect().top<=120)t=o.id;else break;t!==n&&(n&&e.get(n)?.removeAttribute("aria-current"),t&&e.get(t)?.setAttribute("aria-current","location"),n=t)};window.addEventListener("scroll",r,{passive:!0}),r()}</script> <ul class="border-ink/15 ml-2.5 list-none border-l pl-0"> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Modeling and diagnosis </li><li> <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Symptoms and diagnosis </a> </li> <li> <a href="/portfolio/collaboration-2-0/clues-root-causes" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Clues — where the regress terminates </a> </li> <li> <a href="/portfolio/collaboration-2-0/disclaimers" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Disclaimers </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Solution — Collaboration 2.0 </li><li> <a href="/portfolio/collaboration-2-0/a-new-lens" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> A new lens — the organization as a complex system </a> </li> <li> <a href="/portfolio/collaboration-2-0/approach" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The approach — Collaboration 2.0 </a> </li> <li> <a href="/portfolio/collaboration-2-0/prd-as-the-wedge" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> What gets discussed — the PRD </a> </li> <li> <a href="/portfolio/collaboration-2-0/authoring-process-and-roles" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The collaborative authoring process </a> </li> <li> <a href="/portfolio/collaboration-2-0/adoption" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The adoption argument </a> </li> <li> <a href="/portfolio/collaboration-2-0/measurement-and-refinement" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Measurement, feedback and refinement </a> </li> <li> <a href="/portfolio/collaboration-2-0/what-would-have-come-next" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> What would have come next </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Ending </li><li> <a href="/portfolio/collaboration-2-0/results-and-reflection" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Status, outcome and reflection </a> </li> <li> <a href="/portfolio/collaboration-2-0/artifacts" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Artifacts </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Appendix </li><li> <a href="/portfolio/collaboration-2-0/intellectual-assets-evidence" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Evidence — the intellectual-assets analysis </a> </li> <li> <a href="/portfolio/collaboration-2-0/strategy" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The phased strategy </a> </li> <li> <a href="/portfolio/collaboration-2-0/survey-analysis" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The survey — instrument, results and reading </a> </li>  </ul> </nav></div></aside><div class="order-2 min-w-0 flex-1 basis-[440px]"><nav aria-label="Breadcrumb" class="mb-6"> <ol class="text-quiet flex list-none flex-wrap items-center gap-x-1.5 gap-y-1 p-0 font-mono text-[11px] tracking-[0.06em] uppercase"> <li class="flex items-center gap-1.5"> <a href="/portfolio" class="hover:text-ink no-underline"> Portfolio </a> <span aria-hidden="true">›</span> </li> <li class="text-accent" aria-current="page">Collaboration 2.0 — R&amp;D Operating Model</li> </ol> </nav><div class="animate space-y-1"><h1 class="text-ink text-3xl font-semibold">Collaboration 2.0 — R&amp;D Operating Model</h1><p class="max-w-(--measure)">Diagnosing why a ~100-person R&amp;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable.</p></div><dl class="animate mt-8 mb-10 grid max-w-(--measure) grid-cols-[auto_1fr] gap-x-4 gap-y-1 border-b border-ink/15 pb-6 text-sm"><dt class="text-ink font-semibold">Role</dt><dd>Diagnosis, intervention design and strategy</dd><dt class="text-ink font-semibold">Period</dt><dd>2025–2026</dd><dt class="text-ink font-semibold">Status</dt><dd>archived</dd><dt class="text-ink font-semibold">Outcome</dt><dd>Remained a half-executed plan — disrupted by the same dynamic the diagnosis had identified as the root cause.</dd></dl><article class="animate article-wide mt-8"><p><a href="/portfolio">← Portfolio</a></p>
+<h1 id="collaboration-20--rd-operating-model">Collaboration 2.0 — R&#x26;D Operating Model</h1>
+<h3 id="redesigning-how-a-100-person-rd-division-decides-things">Redesigning how a 100-person R&#x26;D division decides things</h3>
+<p><em>Differentiator track · a diagnosis and design record · Level 1–2 (skeleton)</em></p>
+<blockquote>
+<p><strong>Version 1.0 — the foundational version of this entry.</strong></p>
+</blockquote>
+<hr>
+<h2 id="background-story">Background Story</h2>
+<p><em>Two-minute read. If you read nothing else, read this.</em></p>
+<h3 id="background-context">Background Context</h3>
+<p>It is a story of a digital-industries division of roughly 100 technical staff — industrial condition-monitoring products, IIoT, embedded and platform software. The division started in 2016 with about 20 experts and scientists. Given the high hopes — or maybe the apparent necessity — of keeping up with the trends of the so-called digital revolution, this R&#x26;D unit got support, expanded its projects and studies, and ended up with about 100 people working there by 2024. Its customers were mostly other parts of the same industrial group, plus some external plant operators.</p>
+<p>Then in 2026, with the national economy under severe pressure, the authorities suddenly zoomed in on the division and questioned whether the programme had succeeded. And here is the interesting part. There was an ongoing debate, with a wide spread of opinion, on the answer to “was it a failure?” As the wise might expect, a definite answer to that question is not the important side of the argument. Nevertheless, if you take the financial return to date as the central criterion, it is hard to answer anything other than “Yes”.</p>
+<p>In the middle of that sudden curiosity from the higher decision makers, and their strong will to prune the system (<em>rather like Elon Musk swinging a chainsaw over his head</em>), the engineers and developers were the main focus of the blame. It was no big surprise that they were the ones most likely to be pruned first. Then I brought up an argument — which I believe almost nobody could defeat — showing that the problem is not the employees. It is rooted somewhere else, around the very hand holding the chainsaw.</p>
+<blockquote>
+<p>[!Tip] An Important Lesson
+<strong>That was the glorious moment when Hossein decided to become the Nelson Mandela of the group :)))</strong> (see <a href="/portfolio/collaboration-2-0/intellectual-assets-evidence">4.1 · Evidence — the intellectual-assets analysis</a>)</p>
+</blockquote>
+<p><strong>NEVERTHELESS, it didn’t take long for him to realize that the system was asking for more of an Ayatollah Khomeini or a Reza Khan!</strong> (See <a href="#spoiler">Spoiler</a>)</p>
+<blockquote>
+</blockquote>
+<p>That is why I believe that if you miss the nuances of managing projects like this, the final bill is bigger than the wasted time and money — you end up paying in culture. And once a bad culture settles in, uprooting it is far harder than getting the management right in the first place.</p>
+<hr>
+<h2 id="what-did-i-do">What did I do?</h2>
+<h4 id="diagnosis">Diagnosis</h4>
+<p>I have known the organization since I was a member of the APAC Research Group during my M.Sc. The research group worked with them from time to time, so I was always aware of their internal processes and projects. My observations always set me thinking about how the concepts and ideas I study in complex systems and socio-cultural systems could explain the repeated patterns and the systematic malfunctioning of this one.</p>
+<p>The visible symptoms were the ordinary ones, which you have probably witnessed yourself from time to time: slipped schedules, duplicated work, friction at integration points, products that reached the market without anyone able to say who the customer was. The diagnosis was that these were not independent problems. They were being driven by an underlying mechanism.</p>
+<p>More detail at <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">1.1 · Symptoms and diagnosis</a></p>
+<h4 id="intervention">Intervention</h4>
+<p>At some point I got the chance to put my ideas to the division’s leaders, and we found that we could build a dialogue and a shared understanding effectively. That encouraged me to take a couple of steps further, write a structured analysis, and propose a solution named <strong>Collaboration 2.0</strong>. It is deliberately <em>not</em> a culture program. It is a change to the authoring process of a single document — the Product Requirement Document — chosen on the reasoning that <strong>an organization can be made to adopt a document, but cannot be made to adopt trust.</strong> The PRD was the wedge; transparency, distributed decision-making, and traceable credit were smuggled in as properties of its workflow rather than declared as values.</p>
+<p>This work grew into a phased 24-month strategy, a concrete process design, document templates, and a role and responsibility model mapped to ISO/IEC/IEEE 15288.</p>
+<blockquote>
+<p>[!Warning] Spoiler
+I should say straight away what all my efforts and struggles for change ended up producing. As a matter of fact, it remained a half-executed plan. It was disrupted — interestingly — by the same factor that had been identified as the root of the causes.</p>
+<blockquote>
+<p>Now that I look back at this experience, it reminds me of <em>Richard Dawkins’s selfish gene</em>: a particular code of behaviour in the cell’s propagation suppresses other genes that carry a competing function. Systematically, that behaviour steers the whole platform the molecule sits in — a far higher level of biological organization — in the direction that reinforces the molecule itself and keeps it present in future generations.
+<a id="spoiler"></a></p>
+</blockquote>
+</blockquote>
+<p>The framework I proposed comes out of my system-oriented thinking, and especially my bias toward framing any problem with people in it as a complex system — a socio-cultural system. One common example of how a minor change at the micro level ends up as a huge change in the macro pattern is a fish swarm: adjust one behavioral variable in each fish slightly, such as the tendency to turn toward the center of the population, and the dynamics and the shape of the circling swarm change.</p>
+<p>Collaboration 2.0 is designed on a similar mindset. It means to change the bigger patterns with changes that are:</p>
+<ul>
+<li>small,</li>
+<li>frequent,</li>
+<li>widely spread,</li>
+<li>and placed so that they block the causal relations in the graph discussed earlier.</li>
+</ul>
+<p>Collaboration 2.0 is centered on transparency, deliberation, and the availability of
+contribution. The immediate outputs of those features are visibility, trackability, and
+therefore responsibility — and, alongside them, the harvesting of the company’s intellectual
+assets, which has always been the factor I weighted most heavily in the analysis.</p>
+<p>You may read all my portfolio docs and wonder: didn’t Hossein make this too complex? Then I
+would refer you to the Zen of Python:</p>
+<blockquote>
+<p>simple is better than complex
+complex is better than complicated</p>
+</blockquote>
+<p><strong>Track:</strong> differentiator / socio-technical. The reasoning is the deliverable; there is no running system to demonstrate.</p>
+<hr>
+<h3 id="figure-1--my-diagnosis-and-design-process">Figure 1 · My diagnosis and design process</h3>
+<figure class="diagram"><!-- Generated by scripts/diagrams.mjs. Do not edit.
+     Source: src\content\portfolio\collaboration-2-0\index.md (diagram 1)
+     mermaid-hash: a8968ba545ce -->
+<svg id="mmd-index-1" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="max-width: 878px; min-width: 659px;" viewBox="0 0 878.4384765625 2145.671875" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#mmd-index-1{font-family:"Courier New",Courier,monospace;font-size:15px;fill:var(--diagram-node-text, #3a2a1e);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mmd-index-1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mmd-index-1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mmd-index-1 .error-icon{fill:var(--diagram-surface, #e3d2b9);}#mmd-index-1 .error-text{fill:var(--diagram-surface, #e3d2b9);stroke:var(--diagram-surface, #e3d2b9);}#mmd-index-1 .edge-thickness-normal{stroke-width:1px;}#mmd-index-1 .edge-thickness-thick{stroke-width:3.5px;}#mmd-index-1 .edge-pattern-solid{stroke-dasharray:0;}#mmd-index-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#mmd-index-1 .edge-pattern-dashed{stroke-dasharray:3;}#mmd-index-1 .edge-pattern-dotted{stroke-dasharray:2;}#mmd-index-1 .marker{fill:var(--diagram-line, #9a8e7c);stroke:var(--diagram-line, #9a8e7c);}#mmd-index-1 .marker.cross{stroke:var(--diagram-line, #9a8e7c);}#mmd-index-1 svg{font-family:"Courier New",Courier,monospace;font-size:15px;}#mmd-index-1 p{margin:0;}#mmd-index-1 .label{font-family:"Courier New",Courier,monospace;color:var(--diagram-node-text, #3a2a1e);}#mmd-index-1 .cluster-label text{fill:var(--diagram-node-text, #3a2a1e);}#mmd-index-1 .cluster-label span{color:var(--diagram-node-text, #3a2a1e);}#mmd-index-1 .cluster-label span p{}#mmd-index-1 .label text,#mmd-index-1 span{fill:var(--diagram-node-text, #3a2a1e);color:var(--diagram-node-text, #3a2a1e);}#mmd-index-1 .node rect,#mmd-index-1 .node circle,#mmd-index-1 .node ellipse,#mmd-index-1 .node polygon,#mmd-index-1 .node path{fill:var(--diagram-node-fill, #dec7ab);stroke:var(--diagram-node-stroke, #897b6b);stroke-width:1px;}#mmd-index-1 .rough-node .label text,#mmd-index-1 .node .label text,#mmd-index-1 .image-shape .label,#mmd-index-1 .icon-shape .label{text-anchor:middle;}#mmd-index-1 .node .katex path{fill:var(--diagram-node-text, #3a2a1e);stroke:var(--diagram-node-text, #3a2a1e);stroke-width:1px;}#mmd-index-1 .rough-node .label,#mmd-index-1 .node .label,#mmd-index-1 .image-shape .label,#mmd-index-1 .icon-shape .label{text-align:center;}#mmd-index-1 .node.clickable{cursor:pointer;}#mmd-index-1 .root .anchor path{fill:var(--diagram-line, #9a8e7c)!important;stroke-width:0;stroke:var(--diagram-line, #9a8e7c);}#mmd-index-1 .arrowheadPath{fill:var(--diagram-node-fill, #dec7ab);}#mmd-index-1 .edgePaths .path{stroke:var(--diagram-line, #9a8e7c);stroke-width:1px;}#mmd-index-1 .flowchart-link{stroke:var(--diagram-line, #9a8e7c);fill:none;}#mmd-index-1 .edgeLabel{text-align:center;}#mmd-index-1 .edgeLabel p{}#mmd-index-1 .edgeLabel rect{opacity:0.5;fill:var(--diagram-surface, #e3d2b9);}#mmd-index-1 .labelBkg{}#mmd-index-1 .cluster rect{fill:var(--diagram-surface, #e3d2b9);stroke:var(--diagram-node-stroke, #897b6b);stroke-width:1px;}#mmd-index-1 .cluster text{fill:var(--diagram-node-text, #3a2a1e);}#mmd-index-1 .cluster span{color:var(--diagram-node-text, #3a2a1e);}#mmd-index-1 .node .collapsed-indicator{fill:var(--diagram-node-stroke, #897b6b);stroke:none;opacity:0.6;}#mmd-index-1 .node .collapsed-separator{stroke:var(--diagram-node-stroke, #897b6b);stroke-width:0.75px;}#mmd-index-1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"Courier New",Courier,monospace;font-size:12px;background:var(--diagram-surface, #e3d2b9);border:1px solid hsl(1.4173228346, 60%, 39.8039215686%);border-radius:2px;pointer-events:none;z-index:100;}#mmd-index-1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:var(--diagram-node-text, #3a2a1e);}#mmd-index-1 rect.text{fill:none;stroke-width:0;}#mmd-index-1 .icon-shape,#mmd-index-1 .image-shape{text-align:center;}#mmd-index-1 .icon-shape p,#mmd-index-1 .image-shape p{padding:2px;}#mmd-index-1 .icon-shape .label rect,#mmd-index-1 .image-shape .label rect{opacity:0.5;fill:var(--diagram-surface, #e3d2b9);}#mmd-index-1 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mmd-index-1 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mmd-index-1 .node .neo-node{stroke:var(--diagram-node-stroke, #897b6b);}#mmd-index-1 [data-look="neo"].node rect,#mmd-index-1 [data-look="neo"].cluster rect,#mmd-index-1 [data-look="neo"].node polygon{stroke:url(#mmd-index-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-index-1 [data-look="neo"].swimlane.cluster rect{filter:none;}#mmd-index-1 [data-look="neo"].node path{stroke:url(#mmd-index-1-gradient);stroke-width:1px;}#mmd-index-1 [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-index-1 [data-look="neo"].node .neo-line path{stroke:var(--diagram-node-stroke, #897b6b);filter:none;}#mmd-index-1 [data-look="neo"].node circle{stroke:url(#mmd-index-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-index-1 [data-look="neo"].node circle .state-start{fill:var(--diagram-node-text, #3a2a1e);}#mmd-index-1 [data-look="neo"].icon-shape .icon{fill:url(#mmd-index-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-index-1 [data-look="neo"].icon-shape .icon-neo path{stroke:url(#mmd-index-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-index-1 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mmd-index-1_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-index-1_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-index-1_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-index-1_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></polygon></marker><marker id="mmd-index-1_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mmd-index-1_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mmd-index-1_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></circle></marker><marker id="mmd-index-1_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"></circle></marker><marker id="mmd-index-1_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-index-1_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mmd-index-1_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"></path></marker><marker id="mmd-index-1_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M395.692,66.406L351.165,74.172C306.638,81.937,217.583,97.469,173.056,118.818C128.529,140.167,128.529,167.333,128.529,196.25C128.529,225.167,128.529,255.833,128.529,295.964C128.529,336.094,128.529,385.688,128.529,435.281C128.529,484.875,128.529,534.469,128.529,567.266C128.529,600.063,128.529,616.063,128.529,624.063L128.529,632.063" id="mmd-index-1-L_Q_A_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Q_A_0" data-points="W3sieCI6Mzk1LjY5MjM4MjgxMjUsInkiOjY2LjQwNjE4NzM4MDkwMjk0fSx7IngiOjEyOC41Mjg1NjQ0NTMxMjUsInkiOjExM30seyJ4IjoxMjguNTI4NTY0NDUzMTI1LCJ5IjoxOTQuNX0seyJ4IjoxMjguNTI4NTY0NDUzMTI1LCJ5IjoyODYuNX0seyJ4IjoxMjguNTI4NTY0NDUzMTI1LCJ5Ijo0MzUuMjgxMjV9LHsieCI6MTI4LjUyODU2NDQ1MzEyNSwieSI6NTg0LjA2MjV9LHsieCI6MTI4LjUyODU2NDQ1MzEyNSwieSI6NjM2LjA2MjV9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M606.771,80.372L624.5,85.81C642.229,91.248,677.687,102.124,695.417,111.062C713.146,120,713.146,127,713.146,130.5L713.146,134" id="mmd-index-1-L_Q_C_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Q_C_0" data-points="W3sieCI6NjA2Ljc3MDUwNzgxMjUsInkiOjgwLjM3MTc1OTk0MDM2ODczfSx7IngiOjcxMy4xNDU3NTE5NTMxMjUsInkiOjExM30seyJ4Ijo3MTMuMTQ1NzUxOTUzMTI1LCJ5IjoxMzh9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M128.529,716.063L128.529,724.729C128.529,733.396,128.529,750.729,128.529,767.604C128.529,784.479,128.529,800.896,128.529,809.104L128.529,817.313" id="mmd-index-1-L_A_B_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MTI4LjUyODU2NDQ1MzEyNSwieSI6NzE2LjA2MjV9LHsieCI6MTI4LjUyODU2NDQ1MzEyNSwieSI6NzY4LjA2MjV9LHsieCI6MTI4LjUyODU2NDQ1MzEyNSwieSI6ODIxLjMxMjV9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M713.146,251L713.146,256.917C713.146,262.833,713.146,274.667,713.146,285.833C713.146,297,713.146,307.5,713.146,312.75L713.146,318" id="mmd-index-1-L_C_D_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6NzEzLjE0NTc1MTk1MzEyNSwieSI6MjUxfSx7IngiOjcxMy4xNDU3NTE5NTMxMjUsInkiOjI4Ni41fSx7IngiOjcxMy4xNDU3NTE5NTMxMjUsInkiOjMyMn1d" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M713.146,548.563L713.146,554.479C713.146,560.396,713.146,572.229,713.146,583.396C713.146,594.563,713.146,605.063,713.146,610.313L713.146,615.563" id="mmd-index-1-L_D_E_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6NzEzLjE0NTc1MTk1MzEyNSwieSI6NTQ4LjU2MjV9LHsieCI6NzEzLjE0NTc1MTk1MzEyNSwieSI6NTg0LjA2MjV9LHsieCI6NzEzLjE0NTc1MTk1MzEyNSwieSI6NjE5LjU2MjV9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M713.146,732.563L713.146,738.479C713.146,744.396,713.146,756.229,713.146,767.396C713.146,778.563,713.146,789.063,713.146,794.313L713.146,799.563" id="mmd-index-1-L_E_F_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_F_0" data-points="W3sieCI6NzEzLjE0NTc1MTk1MzEyNSwieSI6NzMyLjU2MjV9LHsieCI6NzEzLjE0NTc1MTk1MzEyNSwieSI6NzY4LjA2MjV9LHsieCI6NzEzLjE0NTc1MTk1MzEyNSwieSI6ODAzLjU2MjV9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M637.956,971.435L605.791,991.258C573.627,1011.082,509.298,1050.728,459.304,1077.598C409.309,1104.468,373.649,1118.562,355.819,1125.608L337.988,1132.655" id="mmd-index-1-L_F_G_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_G_0" data-points="W3sieCI6NjM3Ljk1NTUxMjYzMjE2NzksInkiOjk3MS40MzQ3NjA2NzkwNDI5fSx7IngiOjQ0NC45Njk5NzA3MDMxMjUsInkiOjEwOTAuMzc1fSx7IngiOjMzNC4yNjg0NjcyMzQxNDE4LCJ5IjoxMTM0LjEyNX1d" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M128.529,1028.875L128.529,1039.125C128.529,1049.375,128.529,1069.875,137.109,1087C145.689,1104.125,162.85,1117.874,171.43,1124.749L180.011,1131.624" id="mmd-index-1-L_B_G_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_G_0" data-points="W3sieCI6MTI4LjUyODU2NDQ1MzEyNSwieSI6MTAyOC44NzV9LHsieCI6MTI4LjUyODU2NDQ1MzEyNSwieSI6MTA5MC4zNzV9LHsieCI6MTgzLjEzMjI3MzIwNDI5MTA0LCJ5IjoxMTM0LjEyNX1d" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M233.056,1214.125L233.056,1220.042C233.056,1225.958,233.056,1237.792,233.056,1248.958C233.056,1260.125,233.056,1270.625,233.056,1275.875L233.056,1281.125" id="mmd-index-1-L_G_H_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_H_0" data-points="W3sieCI6MjMzLjA1NTY2NDA2MjUsInkiOjEyMTQuMTI1fSx7IngiOjIzMy4wNTU2NjQwNjI1LCJ5IjoxMjQ5LjYyNX0seyJ4IjoyMzMuMDU1NjY0MDYyNSwieSI6MTI4NS4xMjV9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M233.056,1519.672L233.056,1526.964C233.056,1534.255,233.056,1548.839,233.056,1571.005C233.056,1593.172,233.056,1622.922,233.056,1637.797L233.056,1652.672" id="mmd-index-1-L_H_NO_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_NO_0" data-points="W3sieCI6MjMzLjA1NTY2NDA2MjUsInkiOjE1MTkuNjcxODc1fSx7IngiOjIzMy4wNTU2NjQwNjI1LCJ5IjoxNTYzLjQyMTg3NX0seyJ4IjoyMzMuMDU1NjY0MDYyNSwieSI6MTY1Ni42NzE4NzV9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M233.056,1703.672L233.056,1721.964C233.056,1740.255,233.056,1776.839,258.985,1805.797C284.914,1834.756,336.772,1856.089,362.701,1866.756L388.63,1877.423" id="mmd-index-1-L_NO_CST_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_NO_CST_0" data-points="W3sieCI6MjMzLjA1NTY2NDA2MjUsInkiOjE3MDMuNjcxODc1fSx7IngiOjIzMy4wNTU2NjQwNjI1LCJ5IjoxODEzLjQyMTg3NX0seyJ4IjozOTIuMzI5MTAxNTYyNSwieSI6MTg3OC45NDQ3MDMwMDE5ODIxfV0=" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M516.853,1518.922L516.853,1526.339C516.853,1533.755,516.853,1548.589,516.853,1562.63C516.853,1576.672,516.853,1589.922,516.853,1596.547L516.853,1603.172" id="mmd-index-1-L_CS_CSAb_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_CS_CSAb_0" data-points="W3sieCI6NTE2Ljg1MjUzOTA2MjUsInkiOjE1MTguOTIxODc1fSx7IngiOjUxNi44NTI1MzkwNjI1LCJ5IjoxNTYzLjQyMTg3NX0seyJ4Ijo1MTYuODUyNTM5MDYyNSwieSI6MTYwNy4xNzE4NzV9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M516.853,1753.172L516.853,1763.214C516.853,1773.255,516.853,1793.339,516.853,1812.755C516.853,1832.172,516.853,1850.922,516.853,1860.297L516.853,1869.672" id="mmd-index-1-L_CSAb_CST_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_CSAb_CST_0" data-points="W3sieCI6NTE2Ljg1MjUzOTA2MjUsInkiOjE3NTMuMTcxODc1fSx7IngiOjUxNi44NTI1MzkwNjI1LCJ5IjoxODEzLjQyMTg3NX0seyJ4Ijo1MTYuODUyNTM5MDYyNSwieSI6MTg3My42NzE4NzV9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M744.009,1015.762L748.242,1028.197C752.475,1040.633,760.941,1065.504,765.174,1091.898C769.407,1118.292,769.407,1146.208,769.407,1172.75C769.407,1199.292,769.407,1224.458,769.407,1262.504C769.407,1300.549,769.407,1351.474,769.407,1403.773C769.407,1456.073,769.407,1509.747,769.407,1556.043C769.407,1602.339,769.407,1641.255,769.407,1682.922C769.407,1724.589,769.407,1769.005,748.29,1800.975C727.173,1832.946,684.939,1852.47,663.822,1862.232L642.705,1871.993" id="mmd-index-1-L_F_CST_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_CST_0" data-points="W3sieCI6NzQ0LjAwODk5NjcyMDgxNzQsInkiOjEwMTUuNzYxNzU1MjMyMzA3N30seyJ4Ijo3NjkuNDA3MjI2NTYyNSwieSI6MTA5MC4zNzV9LHsieCI6NzY5LjQwNzIyNjU2MjUsInkiOjExNzQuMTI1fSx7IngiOjc2OS40MDcyMjY1NjI1LCJ5IjoxMjQ5LjYyNX0seyJ4Ijo3NjkuNDA3MjI2NTYyNSwieSI6MTQwMi4zOTg0Mzc1fSx7IngiOjc2OS40MDcyMjY1NjI1LCJ5IjoxNTYzLjQyMTg3NX0seyJ4Ijo3NjkuNDA3MjI2NTYyNSwieSI6MTY4MC4xNzE4NzV9LHsieCI6NzY5LjQwNzIyNjU2MjUsInkiOjE4MTMuNDIxODc1fSx7IngiOjYzOS4wNzM4NjUzNDcyOTY1LCJ5IjoxODczLjY3MTg3NX1d" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path><path d="M516.853,1986.672L516.853,1993.964C516.853,2001.255,516.853,2015.839,516.853,2029.755C516.853,2043.672,516.853,2056.922,516.853,2063.547L516.853,2070.172" id="mmd-index-1-L_CST_C2_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_CST_C2_0" data-points="W3sieCI6NTE2Ljg1MjUzOTA2MjUsInkiOjE5ODYuNjcxODc1fSx7IngiOjUxNi44NTI1MzkwNjI1LCJ5IjoyMDMwLjQyMTg3NX0seyJ4Ijo1MTYuODUyNTM5MDYyNSwieSI6MjA3NC4xNzE4NzV9XQ==" data-look="classic" marker-end="url(#mmd-index-1_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_Q_A_0" transform="translate(0, 0)"><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"></tspan></text></g></g><g><rect class="background" style="stroke: none"></rect></g><g class="edgeLabel"><g class="label" data-id="L_Q_C_0" transform="translate(0, 0)"><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"></tspan></text></g></g><g><rect class="background" style="stroke: none"></rect></g><g class="edgeLabel" transform="translate(128.528564453125, 768.0625)"><g class="label" data-id="L_A_B_0" transform="translate(0, -11.5)"><g><rect class="background" style="" x="-69.5234375" y="1" width="139.046875" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">it</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> prooved</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> that</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(713.145751953125, 286.5)"><g class="label" data-id="L_C_D_0" transform="translate(0, -11.5)"><g><rect class="background" style="" x="-65.0234375" y="1" width="130.046875" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">it</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> resulted</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> in</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(713.145751953125, 584.0625)"><g class="label" data-id="L_D_E_0" transform="translate(-0.49169921875, -11.5)"><g><rect class="background" style="" x="-83.03125" y="1" width="167.0458984375" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">hard</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> to</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> comperhend</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(713.145751953125, 768.0625)"><g class="label" data-id="L_E_F_0" transform="translate(0, -11.5)"><g><rect class="background" style="" x="-51.515625" y="1" width="103.03125" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Resulted</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> in</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(490.79606, 1062.13161)"><g class="label" data-id="L_F_G_0" transform="translate(-0.49169921875, -11.5)"><g><rect class="background" style="" x="-92.03125" y="1" width="185.0458984375" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">easier</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> to</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> comperhend</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(128.528564453125, 1090.375)"><g class="label" data-id="L_B_G_0" transform="translate(0, -19.75)"><g><rect class="background" style="" x="-96.53125" y="1" width="193.0625" height="37.5"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">I</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> start</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> searching</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> for</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">roots</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> by</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(233.0556640625, 1249.625)"><g class="label" data-id="L_G_H_0" transform="translate(-0.4951171875, -11.5)"><g><rect class="background" style="" x="-24.5078125" y="1" width="50.005859375" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">found</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(233.0556640625, 1563.421875)"><g class="label" data-id="L_H_NO_0" transform="translate(0, -19.75)"><g><rect class="background" style="" x="-87.5234375" y="1" width="175.046875" height="37.5"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Can</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> be</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> usefull</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> to</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">propose</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> a</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> solution?</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(233.0556640625, 1813.421875)"><g class="label" data-id="L_NO_CST_0" transform="translate(0, -28)"><g><rect class="background" style="" x="-92.03125" y="1" width="184.0625" height="54"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">The</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> solution</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> can</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> not</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">be</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> attacking</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> root</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">causes</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> directly</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(516.8525390625, 1563.421875)"><g class="label" data-id="L_CS_CSAb_0" transform="translate(0, -11.5)"><g><rect class="background" style="" x="-74.03125" y="1" width="148.0625" height="21"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">what</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> is</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> it</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> about</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(516.8525390625, 1813.421875)"><g class="label" data-id="L_CSAb_CST_0" transform="translate(-0.49658203125, -36.25)"><g><rect class="background" style="" x="-87.5234375" y="1" width="176.0400390625" height="70.5"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">designing</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> an</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">intervention</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> method</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">based</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> on</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> such</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="3.2em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">perspective</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(769.4072265625, 1402.3984375)"><g class="label" data-id="L_F_CST_0" transform="translate(0, -28)"><g><rect class="background" style="" x="-101.03125" y="1" width="202.0625" height="54"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">It</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> can</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> explain</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> the</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">repeatitive</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> patterns</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">of</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> agents</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> interactions</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(516.8525390625, 2030.421875)"><g class="label" data-id="L_CST_C2_0" transform="translate(0.005615234375, -19.75)"><g><rect class="background" style="" x="-84.03125" y="1" width="168.05126953125" height="37.5"></rect><text y="-10.1" text-anchor="middle" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">All</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> my</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> efforts</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> and</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">design</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> resulted</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> in</tspan></tspan></text></g></g></g></g><g class="nodes"><g class="node default" id="mmd-index-1-flowchart-Q-0" data-look="classic" transform="translate(501.2314453125, 48)"><rect class="basic label-container" style="" rx="5" ry="5" x="-105.5390625" y="-40" width="211.078125" height="80"></rect><g class="label" style="" transform="translate(0, -25)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">START</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> --</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> I</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> asked</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">myself</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> how</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> can</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> it</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> be</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">solved?</tspan></tspan></text></g></g></g><a xlink:href="/portfolio/collaboration-2-0/intellectual-assets-evidence" data-look="classic" transform="translate(128.528564453125, 676.0625)"><g class="node default clickable" id="mmd-index-1-flowchart-A-2"><rect class="basic label-container" style="" x="-120.528564453125" y="-40" width="241.05712890625" height="80"></rect><g class="label" style="" transform="translate(0, -25)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">I</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> proved</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> the</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> problem</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">is</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> not</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> intellectual</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">assets</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/symptoms-and-diagnosis" data-look="classic" transform="translate(713.145751953125, 194.5)"><g class="node default clickable" id="mmd-index-1-flowchart-C-4"><rect class="basic label-container" style="" x="-120.0234375" y="-56.5" width="240.046875" height="113"></rect><g class="label" style="" transform="translate(0, -41.5)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">I</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> did</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> a</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Brain</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">storming:</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> conecting</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">symptoms</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> with</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> their</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="3.2em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">corresponding</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> causes</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="4.300000000000001em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">and</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> effectes</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/clues-root-causes" data-look="classic" transform="translate(128.528564453125, 925.09375)"><g class="node default clickable" id="mmd-index-1-flowchart-B-7"><polygon points="103.78125,0 207.5625,-103.78125 103.78125,-207.5625 0,-103.78125" class="label-container" transform="translate(-103.28125, 103.78125)"></polygon><g class="label" style="" transform="translate(0, -16.75)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">it</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> is</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> related</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> to</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">company</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> itself</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/symptoms-and-diagnosis" data-look="classic" transform="translate(713.145751953125, 435.28125)"><g class="node default clickable" id="mmd-index-1-flowchart-D-11"><polygon points="113.28125,0 226.5625,-113.28125 113.28125,-226.5625 0,-113.28125" class="label-container" transform="translate(-112.78125, 113.28125)"></polygon><g class="label" style="" transform="translate(0, -16.75)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">A</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Graph</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> with</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> close</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">cuircuits</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/symptoms-and-diagnosis" data-look="classic" transform="translate(713.145751953125, 676.0625)"><g class="node default clickable" id="mmd-index-1-flowchart-E-14"><rect class="basic label-container" style="" x="-129.0390625" y="-56.5" width="258.078125" height="113"></rect><g class="label" style="" transform="translate(0, -41.5)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">I</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> distilated</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> the</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> graph</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">by</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> clustering</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> of</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">symptoms</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> -</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> mutual</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="3.2em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">connectivities</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> as</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="4.300000000000001em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">taxonomy</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/symptoms-and-diagnosis" data-look="classic" transform="translate(713.145751953125, 925.09375)"><g class="node default clickable" id="mmd-index-1-flowchart-F-17"><polygon points="121.53125,0 243.0625,-121.53125 121.53125,-243.0625 0,-121.53125" class="label-container" transform="translate(-121.03125, 121.53125)"></polygon><g class="label" style="" transform="translate(0, -25)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">A</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> clean</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> graph</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> with</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">higher</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> level</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> of</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">abstraction</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/clues-root-causes" data-look="classic" transform="translate(233.0556640625, 1174.125)"><g class="node default clickable" id="mmd-index-1-flowchart-G-20"><rect class="basic label-container" style="" x="-129.03125" y="-40" width="258.0625" height="80"></rect><g class="label" style="" transform="translate(0, -25)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">finding</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> the</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> initiators</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">of</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> the</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> symptom</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">curcuits</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/clues-root-causes" data-look="classic" transform="translate(233.0556640625, 1402.3984375)"><g class="node default clickable" id="mmd-index-1-flowchart-H-25"><polygon points="117.2734375,0 234.546875,-117.2734375 117.2734375,-234.546875 0,-117.2734375" class="label-container" transform="translate(-116.7734375, 117.2734375)"></polygon><g class="label" style="" transform="translate(0, -16.75)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">root</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> causes</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> whithin</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">the</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> company</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/clues-root-causes" data-look="classic" transform="translate(233.0556640625, 1680.171875)"><g class="node default clickable" id="mmd-index-1-flowchart-NO-28"><rect class="basic label-container" style="" rx="5" ry="5" x="-24.0078125" y="-23.5" width="48.015625" height="47"></rect><g class="label" style="" transform="translate(0, -8.5)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">NO</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/a-new-lens" data-look="classic" transform="translate(516.8525390625, 1930.171875)"><g class="node default clickable" id="mmd-index-1-flowchart-CST-31"><rect class="basic label-container" style="" x="-124.5234375" y="-56.5" width="249.046875" height="113"></rect><g class="label" style="" transform="translate(0, -41.5)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">I</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Decided</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> to</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> attack</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">the</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> graph</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> with</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> a</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">solution</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> based</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="3.2em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">inspired</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> from</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Complex</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="4.300000000000001em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">systems</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/a-new-lens" data-look="classic" transform="translate(516.8525390625, 1402.3984375)"><g class="node default clickable" id="mmd-index-1-flowchart-CS-33"><polygon points="116.5234375,0 233.046875,-116.5234375 116.5234375,-233.046875 0,-116.5234375" class="label-container" transform="translate(-116.0234375, 116.5234375)"></polygon><g class="label" style="" transform="translate(0, -25)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Complex</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Systems</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> -</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">theories</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> and</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">inspirations</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/a-new-lens" data-look="classic" transform="translate(516.8525390625, 1680.171875)"><g class="node default clickable" id="mmd-index-1-flowchart-CSAb-34"><rect class="basic label-container" style="" x="-129.5234375" y="-73" width="259.046875" height="146"></rect><g class="label" style="" transform="translate(0, -58)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">it</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> explains</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> how</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> macro</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">patterns</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> are</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> made</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> by</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="2.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">micro</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> variable</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> through</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="3.2em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">so</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> many</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> complex</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="4.300000000000001em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">interaction</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> of</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> many</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="5.4em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">agents</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> -</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> like</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> human</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> -</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="6.500000000000001em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">at</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> micro</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> level</tspan></tspan></text></g></g></g></a><a xlink:href="/portfolio/collaboration-2-0/approach" data-look="classic" transform="translate(516.8525390625, 2105.921875)"><g class="node default clickable" id="mmd-index-1-flowchart-C2-42"><rect class="basic label-container" style="" rx="5" ry="5" x="-101.0244140625" y="-31.75" width="202.048828125" height="63.5"></rect><g class="label" style="" transform="translate(0, -16.75)"><rect></rect><g><rect class="background" style="stroke: none"></rect><text y="-10.1" style=""><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">END</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> --</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> COLLABRATION</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">2.0</tspan></tspan></text></g></g></g></a></g></g></g><defs><filter id="mmd-index-1-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="var(--diagram-node-text, #3a2a1e)"></feDropShadow></filter></defs><defs><filter id="mmd-index-1-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="var(--diagram-node-text, #3a2a1e)"></feDropShadow></filter></defs><linearGradient id="mmd-index-1-gradient" gradientUnits="objectBoundingBox" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="var(--diagram-node-stroke, #897b6b)" stop-opacity="1"></stop><stop offset="100%" stop-color="hsl(1.1811023622, 60%, 39.8039215686%)" stop-opacity="1"></stop></linearGradient></svg></figure>
+<blockquote>
+<p><strong>Figure 1 — the diagnosis and design process.</strong> The route from the opening question to
+Collaboration 2.0: eliminate the capability explanation, build the symptom graph, find it
+will not terminate, cluster it to make it thinkable, look for roots and find that attacking
+them is not available — and then change the question, and design an intervention from the
+complex-systems side instead. Each box below names where that step is worked out.
+| In Figure 1 | Worked out in |
+| --- | --- |
+| I proved the problem is not intellectual assets | <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">1.1.2</a> · <a href="/portfolio/collaboration-2-0/intellectual-assets-evidence">4.1</a> |
+| Brainstorming: symptoms with their causes and effects | <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">1.1.3</a> |
+| A graph with closed circuits | <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">1.1.4</a>, Figure 2 |
+| Distilling the graph by clustering | <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">1.1.5</a>, Figure 3 |
+| Finding the initiators of the symptom circuits | <a href="/portfolio/collaboration-2-0/clues-root-causes">1.2</a>, Figure 4 |
+| Why attacking the root causes is not the solution | <a href="/portfolio/collaboration-2-0/clues-root-causes#122--what-these-two-conditions-are-and-what-they-are-not">1.2.2</a> |
+| Complex systems — theories and inspirations | <a href="/portfolio/collaboration-2-0/a-new-lens#211--why-complex-systems">2.1.1</a> · <a href="/portfolio/collaboration-2-0/a-new-lens#212--framing--the-organization-as-a-complex-system">2.1.2</a> |
+| An intervention designed from that perspective | <a href="/portfolio/collaboration-2-0/a-new-lens#213--from-a-model-to-a-point-of-intervention">2.1.3</a> · <a href="/portfolio/collaboration-2-0/approach">2.2</a> |</p>
+</blockquote>
+<p><em>In the HTML build, the boxes in Figure 1 are clickable and go to the same places.</em></p>
+<h2 id="contents">Contents</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Page</th><th>What it answers</th></tr></thead><tbody><tr><td></td><td><em><strong>1 · Modeling and diagnosis</strong></em></td><td></td></tr><tr><td><strong>1.1</strong></td><td><a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">Symptoms and diagnosis</a></td><td>How a complaint list became a circuit</td></tr><tr><td><strong>1.2</strong></td><td><a href="/portfolio/collaboration-2-0/clues-root-causes">Clues — where the regress terminates</a></td><td>What is underneath the circuit, and why it cannot be removed</td></tr><tr><td><strong>1.3</strong></td><td><a href="/portfolio/collaboration-2-0/disclaimers">Disclaimers</a></td><td>Where the reasoning is intuition, not proof</td></tr><tr><td></td><td><em><strong>2 · Solution — Collaboration 2.0</strong></em></td><td></td></tr><tr><td><strong>2.1</strong></td><td><a href="/portfolio/collaboration-2-0/a-new-lens">A new lens — the organization as a complex system</a></td><td>Why this lens, and what it bought</td></tr><tr><td>2.1.3</td><td><a href="/portfolio/collaboration-2-0/a-new-lens#213--from-a-model-to-a-point-of-intervention">From a model to a point of intervention</a></td><td>How theory became a design rule</td></tr><tr><td><strong>2.2</strong></td><td><a href="/portfolio/collaboration-2-0/approach">The approach — Collaboration 2.0</a></td><td>The shape of the solution</td></tr><tr><td>2.2.1</td><td><a href="/portfolio/collaboration-2-0/approach#221--the-blueprint">The blueprint</a></td><td>Online · transparent · shared</td></tr><tr><td>2.2.2</td><td><a href="/portfolio/collaboration-2-0/approach#222--what-the-framework-produces">What the framework produces</a></td><td>Always · Everyone · Trackable</td></tr><tr><td><strong>2.3</strong></td><td><a href="/portfolio/collaboration-2-0/prd-as-the-wedge">What gets discussed — the PRD</a></td><td>Why a document, of all things</td></tr><tr><td>2.3.1</td><td><a href="/portfolio/collaboration-2-0/prd-as-the-wedge#231--why-a-document-and-why-this-one">Why a document, and why this one</a></td><td>The wedge</td></tr><tr><td>2.3.2</td><td><a href="/portfolio/collaboration-2-0/prd-as-the-wedge#232--the-decision--attach-the-reform-to-an-artifact-not-to-the-culture">An artifact, not the culture</a></td><td>The decision, and what it cost</td></tr><tr><td><strong>2.4</strong></td><td><a href="/portfolio/collaboration-2-0/authoring-process-and-roles">The collaborative authoring process</a></td><td>How it actually runs, and who owns what</td></tr><tr><td><strong>2.5</strong></td><td><a href="/portfolio/collaboration-2-0/adoption">The adoption argument</a></td><td>Why anyone would agree to this</td></tr><tr><td><strong>2.6</strong></td><td><a href="/portfolio/collaboration-2-0/measurement-and-refinement">Measurement, feedback and refinement</a></td><td>How you would know it worked</td></tr><tr><td><strong>2.7</strong></td><td><a href="/portfolio/collaboration-2-0/what-would-have-come-next">What would have come next</a></td><td>Where the design was heading</td></tr><tr><td></td><td><em><strong>3 · Ending</strong></em></td><td></td></tr><tr><td><strong>3.1</strong></td><td><a href="/portfolio/collaboration-2-0/results-and-reflection">Status, outcome and reflection</a></td><td>What happened, where it stopped, and what it cost</td></tr><tr><td><strong>3.2</strong></td><td><a href="/portfolio/collaboration-2-0/artifacts">Artifacts</a></td><td>What exists, what can be shown, and what is not claimed</td></tr><tr><td></td><td><em><strong>4 · Appendix</strong></em></td><td></td></tr><tr><td><strong>4.1</strong></td><td><a href="/portfolio/collaboration-2-0/intellectual-assets-evidence">Evidence — the intellectual-assets analysis</a></td><td>How do you know the capability was there?</td></tr><tr><td><strong>4.2</strong></td><td><a href="/portfolio/collaboration-2-0/strategy">The phased strategy</a></td><td>What the 24 months looked like</td></tr><tr><td><strong>4.3</strong></td><td><a href="/portfolio/collaboration-2-0/survey-analysis">The survey — instrument, results and reading</a></td><td>What the division said, question by question</td></tr><tr><td>—</td><td>What is deliberately absent</td><td>Reserved for the professional version</td></tr></tbody></table>
+<h3 id="figures">Figures</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Figure</th><th>Where</th></tr></thead><tbody><tr><td><strong>1</strong></td><td>The diagnosis and design process</td><td>this page</td></tr><tr><td><strong>2</strong></td><td>The symptom graph, before any grouping</td><td><a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">1.1.4</a></td></tr><tr><td><strong>3</strong></td><td>The same graph, clustered</td><td><a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">1.1.5</a></td></tr><tr><td><strong>4</strong></td><td>The two enabling conditions</td><td><a href="/portfolio/collaboration-2-0/clues-root-causes">1.2</a></td></tr><tr><td><strong>5</strong></td><td>The three layers of the organization</td><td><a href="/portfolio/collaboration-2-0/a-new-lens#212--framing--the-organization-as-a-complex-system">2.1.2</a></td></tr><tr><td><strong>6</strong></td><td>The collaborative authoring loop</td><td><a href="/portfolio/collaboration-2-0/authoring-process-and-roles#241--the-authoring-loop">2.4.1</a></td></tr><tr><td><strong>7</strong></td><td>The proposed 24-month strategy</td><td><a href="/portfolio/collaboration-2-0/strategy">4.2</a></td></tr><tr><td><strong>8</strong></td><td>One printed survey sheet, redacted</td><td><a href="/portfolio/collaboration-2-0/survey-analysis#the-instrument--how-it-was-made-anonymous">4.3</a></td></tr></tbody></table>
+<hr>
+<p>⟵ <a href="/portfolio">Back to portfolio</a> · Next: <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis">1.1 · Symptoms and diagnosis →</a></p></article></div></div> </main> <footer class="animate"> <div class="mx-auto px-3 max-w-(--measure)">  <div class="relative"> <div class="absolute -top-12 right-0"> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{const o=window.matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:0,behavior:o?"auto":"smooth"})})});</script> <button id="back-to-top" class="group border-muted/45 hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex w-fit flex-nowrap rounded-sm border px-3 py-1.5 transition-colors duration-300 ease-in-out"> <div class="text-sm">Back to top</div> </button> </div> </div> <div class="flex items-center justify-between"> <div class="flex flex-wrap items-center gap-x-2 gap-y-1"> <span>&copy; 2026 • Hossein</span> <a href="/manifesto" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Manifesto</a><a href="/rss.xml" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">RSS</a> </div> <div class="flex flex-wrap items-center gap-1.5"> <button id="light-theme-button" aria-label="Light theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> <button id="dark-theme-button" aria-label="Dark theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> <button id="system-theme-button" aria-label="System theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect> <line x1="8" y1="21" x2="16" y2="21"></line> <line x1="12" y1="17" x2="12" y2="21"></line> </svg> </button> </div> </div>  </div> </footer> <aside data-pagefind-ignore> <div id="backdrop" class="bg-[rgba(0, 0, 0, 0.5] invisible fixed top-0 left-0 z-50 flex h-screen w-full justify-center p-6 backdrop-blur-xs" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="border-muted/45 bg-ground m-0 flex h-fit max-h-[80%] w-full max-w-(--breakpoint-sm) flex-col overflow-auto rounded-sm border p-2 px-4 py-3 shadow-lg"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&#34;showImages&#34;:false,&#34;excerptLength&#34;:15,&#34;resetStyles&#34;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="mr-2 pt-4 pb-1 text-right text-xs">
+Press <span class="prose text-xs"><kbd class="">Esc</kbd></span> or click
+        anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

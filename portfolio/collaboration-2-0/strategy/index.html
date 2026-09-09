@@ -1,0 +1,369 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!--
+  Favicon: the شاه calligraphy, ink #3A2A1E on ground #E9DFC9 so it reads
+  against both light and dark browser chrome. The .ico carries 16/32/48.
+  See docs/art-direction.md — no pure black, no pure white, no emoji.
+--><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.1.3"><!-- Canonical URL --><link rel="canonical" href="https://farahani1.github.io/portfolio/collaboration-2-0/strategy/"><!-- Primary Meta Tags --><title>The phased strategy | Hossein</title><meta name="title" content="The phased strategy | Hossein"><meta name="description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://farahani1.github.io/portfolio/collaboration-2-0/strategy/"><meta property="og:title" content="The phased strategy | Hossein"><meta property="og:description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><meta property="og:image" content="https://farahani1.github.io/og.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://farahani1.github.io/portfolio/collaboration-2-0/strategy/"><meta property="twitter:title" content="The phased strategy | Hossein"><meta property="twitter:description" content="Diagnosing why a ~100-person R&#38;D division kept producing work nobody adopted, and a phased intervention. Reasoning is the deliverable."><meta property="twitter:image" content="https://farahani1.github.io/og.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    updateThemeButtons();
+    addCopyCodeButtons();
+    setGiscusTheme();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    const lightThemeButton = document.getElementById("light-theme-button");
+    lightThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "light");
+      toggleTheme(false);
+      updateThemeButtons();
+    });
+
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    darkThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "dark");
+      toggleTheme(true);
+      updateThemeButtons();
+    });
+
+    const systemThemeButton = document.getElementById("system-theme-button");
+    systemThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "system");
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      updateThemeButtons();
+    });
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (event) => {
+        if (localStorage.theme === "system") {
+          toggleTheme(event.matches);
+        }
+      });
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function updateThemeButtons() {
+    const theme = localStorage.getItem("theme");
+    const lightThemeButton = document.getElementById("light-theme-button");
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    const systemThemeButton = document.getElementById("system-theme-button");
+
+    function removeActiveButtonTheme(button) {
+      // One token, both modes — bg-ink/5 resolves per theme now.
+      button?.classList.remove("bg-ink/5");
+    }
+
+    function addActiveButtonTheme(button) {
+      button?.classList.add("bg-ink/5");
+    }
+
+    removeActiveButtonTheme(lightThemeButton);
+    removeActiveButtonTheme(darkThemeButton);
+    removeActiveButtonTheme(systemThemeButton);
+
+    if (theme === "light") {
+      addActiveButtonTheme(lightThemeButton);
+    } else if (theme === "dark") {
+      addActiveButtonTheme(darkThemeButton);
+    } else {
+      addActiveButtonTheme(systemThemeButton);
+    }
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+    // The CSS already forces these visible under reduced motion; skipping
+    // the timer as well means no staggered class churn either.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    animateElements.forEach((element, index) => {
+      if (reduce) {
+        element.classList.add("show");
+        return;
+      }
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    // CSS cannot reach a scroll behaviour set in JS, so check here too.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({
+      top: 0,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+
+    setGiscusTheme();
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    // Text, not emoji: docs/art-direction.md bans emoji as iconography.
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "Copied";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  const setGiscusTheme = () => {
+    const giscus = document.querySelector(".giscus-frame");
+
+    const isDark = document.documentElement.classList.contains("dark");
+
+    if (giscus) {
+      const url = new URL(giscus.src);
+      url.searchParams.set("theme", isDark ? "dark" : "light");
+      giscus.src = url.toString();
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.B6ZjduXn.css">
+<style>a[data-astro-cid-hh67uq7u][aria-current=location]{color:var(--ink);font-weight:700}a[data-astro-cid-hh67uq7u][aria-current=location]:before{content:"";position:absolute;left:-14.5px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--flow)}
+</style></head> <body> <noscript> <style>
+        .animate {
+          opacity: 1;
+          translate: var(--tw-translate-x) calc(var(--spacing) * 0);
+        }
+      </style> </noscript> <header data-astro-transition-persist="astro-l7r54iwe-1"> <div class="mx-auto px-3 max-w-[820px]">  <div class="flex flex-wrap justify-between gap-y-2">  <a href="/" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out"> <div class="flex flex-col"> <span class="font-semibold">Hossein</span> <span class="text-xs">AI System Design</span> </div> </a> <nav class="flex items-center gap-1 text-sm">  <a href="/portfolio" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Portfolio</a> <span>/</span> <a href="/writing" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Writing</a> <span>/</span> <a href="/workshop" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Workbench</a> <span>/</span> <a href="/work-with-me" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Work with me</a>  <span> / </span> <button id="magnifying-glass" aria-label="Search" class="border-muted/45 bg-ground hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex items-center rounded-sm border px-2 py-1 text-xs transition-colors duration-300 ease-in-out"> <svg height="16" stroke-linejoin="round" viewBox="0 0 16 16" width="16" style="color: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 7C3.5 5.067 5.067 3.5 7 3.5C8.933 3.5 10.5 5.067 10.5 7C10.5 7.88461 10.1718 8.69256 9.63058 9.30876L9.30876 9.63058C8.69256 10.1718 7.88461 10.5 7 10.5C5.067 10.5 3.5 8.933 3.5 7ZM9.96544 11.0261C9.13578 11.6382 8.11014 12 7 12C4.23858 12 2 9.76142 2 7C2 4.23858 4.23858 2 7 2C9.76142 2 12 4.23858 12 7C12 8.11014 11.6382 9.13578 11.0261 9.96544L14.0303 12.9697L14.5607 13.5L13.5 14.5607L12.9697 14.0303L9.96544 11.0261Z" fill="currentColor"></path></svg>
+&nbsp;Search
+</button> </nav> </div>  </div> </header> <main> <div class="mx-auto flex max-w-[1340px] flex-wrap items-start gap-x-9 px-4 pb-24"><aside class="order-1 w-full shrink-0 self-start py-2 lg:sticky lg:top-24 lg:w-[262px]"><div class="border-ink/15 max-h-[calc(100vh-8rem)] overflow-y-auto pb-4 lg:border-r lg:pr-5"><nav aria-label="Pages in this project" class="text-ink/75"> <p class="text-quiet border-ink/15 mb-3.5 border-b pb-2.5 font-mono text-[10.5px] tracking-[0.1em] uppercase">
+In this project
+</p> <a href="/portfolio/collaboration-2-0" class="mb-1 flex items-center justify-between gap-2 border-l-2 py-1.5 pr-1 pl-2.5 text-[15.5px] leading-tight font-semibold no-underline transition-colors border-ink/25 text-ink hover:bg-ink/5"> Collaboration 2.0 — R&amp;D Operating Model </a>  <ul class="border-ink/15 ml-2.5 list-none border-l pl-0"> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Modeling and diagnosis </li><li> <a href="/portfolio/collaboration-2-0/symptoms-and-diagnosis" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Symptoms and diagnosis </a> </li> <li> <a href="/portfolio/collaboration-2-0/clues-root-causes" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Clues — where the regress terminates </a> </li> <li> <a href="/portfolio/collaboration-2-0/disclaimers" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Disclaimers </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Solution — Collaboration 2.0 </li><li> <a href="/portfolio/collaboration-2-0/a-new-lens" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> A new lens — the organization as a complex system </a> </li> <li> <a href="/portfolio/collaboration-2-0/approach" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The approach — Collaboration 2.0 </a> </li> <li> <a href="/portfolio/collaboration-2-0/prd-as-the-wedge" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> What gets discussed — the PRD </a> </li> <li> <a href="/portfolio/collaboration-2-0/authoring-process-and-roles" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The collaborative authoring process </a> </li> <li> <a href="/portfolio/collaboration-2-0/adoption" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The adoption argument </a> </li> <li> <a href="/portfolio/collaboration-2-0/measurement-and-refinement" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Measurement, feedback and refinement </a> </li> <li> <a href="/portfolio/collaboration-2-0/what-would-have-come-next" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> What would have come next </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Ending </li><li> <a href="/portfolio/collaboration-2-0/results-and-reflection" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Status, outcome and reflection </a> </li> <li> <a href="/portfolio/collaboration-2-0/artifacts" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Artifacts </a> </li> <li class="text-quiet mt-3 mb-1 pl-3 font-mono text-[10px] tracking-[0.08em] uppercase" aria-hidden="true"> Appendix </li><li> <a href="/portfolio/collaboration-2-0/intellectual-assets-evidence" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> Evidence — the intellectual-assets analysis </a> </li> <script type="module">const l=document.querySelector("[data-on-this-page]");if(l){const e=new Map;for(const t of l.querySelectorAll("[data-toc-link]"))e.set(t.dataset.tocLink,t);const i=[...e.keys()].map(t=>document.getElementById(t)).filter(t=>t!==null);let n=null;const r=()=>{let t=i.length?i[0].id:null;for(const o of i)if(o.getBoundingClientRect().top<=120)t=o.id;else break;t!==n&&(n&&e.get(n)?.removeAttribute("aria-current"),t&&e.get(t)?.setAttribute("aria-current","location"),n=t)};window.addEventListener("scroll",r,{passive:!0}),r()}</script><li> <a href="/portfolio/collaboration-2-0/strategy" aria-current="page" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors border-accent text-accent bg-accent/10 font-semibold" style="padding-left: 12px"> The phased strategy </a> </li> <li> <nav aria-label="On this page" data-on-this-page class="border-flow/45 mt-1 mb-2 ml-3 border-l-2 pl-2.5" data-astro-cid-hh67uq7u><p class="text-quiet mb-1 font-mono text-[9.5px] tracking-[0.11em] uppercase" data-astro-cid-hh67uq7u>
+On this page
+</p><ul class="list-none p-0" data-astro-cid-hh67uq7u><li data-astro-cid-hh67uq7u><a href="#42--the-phased-strategy" data-toc-link="42--the-phased-strategy" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-ink text-[13.5px] font-semibold" style="padding-left: 4px" data-astro-cid-hh67uq7u>4.2 · The phased strategy</a></li><li data-astro-cid-hh67uq7u><a href="#why-the-strategy-is-part-of-this-at-all" data-toc-link="why-the-strategy-is-part-of-this-at-all" class="hover:text-ink relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-quiet text-[13px]" style="padding-left: 15px" data-astro-cid-hh67uq7u>Why the strategy is part of this at all</a></li></ul></nav> </li><li> <a href="/portfolio/collaboration-2-0/survey-analysis" class="-ml-px block border-l-2 py-1.5 pr-2 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent" style="padding-left: 12px"> The survey — instrument, results and reading </a> </li>  </ul> </nav></div></aside><div class="order-2 min-w-0 flex-1 basis-[440px]"><nav aria-label="Breadcrumb" class="mb-6"> <ol class="text-quiet flex list-none flex-wrap items-center gap-x-1.5 gap-y-1 p-0 font-mono text-[11px] tracking-[0.06em] uppercase"> <li class="flex items-center gap-1.5"> <a href="/portfolio" class="hover:text-ink no-underline"> Portfolio </a> <span aria-hidden="true">›</span> </li><li class="flex items-center gap-1.5"> <a href="/portfolio/collaboration-2-0" class="hover:text-ink no-underline"> Collaboration 2.0 — R&amp;D Operating Model </a> <span aria-hidden="true">›</span> </li> <li class="text-accent" aria-current="page">The phased strategy</li> </ol> </nav><div class="animate space-y-1"><h1 class="text-ink text-3xl font-semibold">The phased strategy</h1></div><article class="animate article-wide mt-8"><p><a href="/portfolio">← Portfolio</a> · <a href="/portfolio/collaboration-2-0">← Collaboration 2.0</a></p>
+<h2 id="42--the-phased-strategy">4.2 · The phased strategy</h2>
+<p>Collaboration 2.0 was one part of a wider proposed strategy, laid out over roughly 24 months in
+three overlapping tracks (Figure 7).</p>
+<figure class="diagram"><!-- Generated by scripts/diagrams.mjs. Do not edit.
+     Source: src\content\portfolio\collaboration-2-0\strategy.md (diagram 1)
+     mermaid-hash: bca383b26fe1 -->
+<svg id="mmd-strategy-1" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784 460" style="max-width: 784px; min-width: 588px;" role="graphics-document document" aria-roledescription="gantt"><style>#mmd-strategy-1{font-family:"Courier New",Courier,monospace;font-size:15px;fill:var(--diagram-node-text, #3a2a1e);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mmd-strategy-1 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mmd-strategy-1 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mmd-strategy-1 .error-icon{fill:var(--diagram-surface, #e3d2b9);}#mmd-strategy-1 .error-text{fill:var(--diagram-surface, #e3d2b9);stroke:var(--diagram-surface, #e3d2b9);}#mmd-strategy-1 .edge-thickness-normal{stroke-width:1px;}#mmd-strategy-1 .edge-thickness-thick{stroke-width:3.5px;}#mmd-strategy-1 .edge-pattern-solid{stroke-dasharray:0;}#mmd-strategy-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#mmd-strategy-1 .edge-pattern-dashed{stroke-dasharray:3;}#mmd-strategy-1 .edge-pattern-dotted{stroke-dasharray:2;}#mmd-strategy-1 .marker{fill:var(--diagram-line, #9a8e7c);stroke:var(--diagram-line, #9a8e7c);}#mmd-strategy-1 .marker.cross{stroke:var(--diagram-line, #9a8e7c);}#mmd-strategy-1 svg{font-family:"Courier New",Courier,monospace;font-size:15px;}#mmd-strategy-1 p{margin:0;}#mmd-strategy-1 .mermaid-main-font{font-family:"Courier New",Courier,monospace;}#mmd-strategy-1 .exclude-range{fill:var(--diagram-surface, #e3d2b9);}#mmd-strategy-1 .section{stroke:none;opacity:0.2;}#mmd-strategy-1 .section0{fill:var(--diagram-surface, #e3d2b9);}#mmd-strategy-1 .section2{fill:var(--diagram-node-fill, #dec7ab);}#mmd-strategy-1 .section1,#mmd-strategy-1 .section3{fill:white;opacity:0.2;}#mmd-strategy-1 .sectionTitle0{fill:var(--diagram-node-text, #3a2a1e);}#mmd-strategy-1 .sectionTitle1{fill:var(--diagram-node-text, #3a2a1e);}#mmd-strategy-1 .sectionTitle2{fill:var(--diagram-node-text, #3a2a1e);}#mmd-strategy-1 .sectionTitle3{fill:var(--diagram-node-text, #3a2a1e);}#mmd-strategy-1 .sectionTitle{text-anchor:start;font-family:"Courier New",Courier,monospace;}#mmd-strategy-1 .grid .tick{stroke:lightgrey;opacity:0.8;shape-rendering:crispEdges;}#mmd-strategy-1 .grid .tick text{font-family:"Courier New",Courier,monospace;fill:var(--diagram-node-text, #3a2a1e);}#mmd-strategy-1 .grid path{stroke-width:0;}#mmd-strategy-1 .today{fill:none;stroke:red;stroke-width:2px;}#mmd-strategy-1 .task{stroke-width:2;}#mmd-strategy-1 .taskText{text-anchor:middle;font-family:"Courier New",Courier,monospace;}#mmd-strategy-1 .taskTextOutsideRight{fill:var(--diagram-node-text, #3a2a1e);text-anchor:start;font-family:"Courier New",Courier,monospace;}#mmd-strategy-1 .taskTextOutsideLeft{fill:var(--diagram-node-text, #3a2a1e);text-anchor:end;}#mmd-strategy-1 .task.clickable{cursor:pointer;}#mmd-strategy-1 .taskText.clickable{cursor:pointer;fill:var(--diagram-node-text, #3a2a1e)!important;font-weight:bold;}#mmd-strategy-1 .taskTextOutsideLeft.clickable{cursor:pointer;fill:var(--diagram-node-text, #3a2a1e)!important;font-weight:bold;}#mmd-strategy-1 .taskTextOutsideRight.clickable{cursor:pointer;fill:var(--diagram-node-text, #3a2a1e)!important;font-weight:bold;}#mmd-strategy-1 .taskText0,#mmd-strategy-1 .taskText1,#mmd-strategy-1 .taskText2,#mmd-strategy-1 .taskText3{fill:var(--diagram-node-text, #3a2a1e);}#mmd-strategy-1 .task0,#mmd-strategy-1 .task1,#mmd-strategy-1 .task2,#mmd-strategy-1 .task3{fill:var(--diagram-node-fill, #dec7ab);stroke:var(--diagram-node-stroke, #897b6b);}#mmd-strategy-1 .taskTextOutside0,#mmd-strategy-1 .taskTextOutside2{fill:var(--diagram-node-text, #3a2a1e);}#mmd-strategy-1 .taskTextOutside1,#mmd-strategy-1 .taskTextOutside3{fill:var(--diagram-node-text, #3a2a1e);}#mmd-strategy-1 .active0,#mmd-strategy-1 .active1,#mmd-strategy-1 .active2,#mmd-strategy-1 .active3{fill:hsl(0.4724409449, 100%, 72.8039215686%);stroke:var(--diagram-node-fill, #dec7ab);}#mmd-strategy-1 .activeText0,#mmd-strategy-1 .activeText1,#mmd-strategy-1 .activeText2,#mmd-strategy-1 .activeText3{fill:var(--diagram-node-text, #3a2a1e)!important;}#mmd-strategy-1 .done0,#mmd-strategy-1 .done1,#mmd-strategy-1 .done2,#mmd-strategy-1 .done3{stroke:grey;fill:lightgrey;stroke-width:2;}#mmd-strategy-1 .doneText0,#mmd-strategy-1 .doneText1,#mmd-strategy-1 .doneText2,#mmd-strategy-1 .doneText3{fill:var(--diagram-node-text, #3a2a1e)!important;}#mmd-strategy-1 .doneText0.taskTextOutsideLeft,#mmd-strategy-1 .doneText0.taskTextOutsideRight,#mmd-strategy-1 .doneText1.taskTextOutsideLeft,#mmd-strategy-1 .doneText1.taskTextOutsideRight,#mmd-strategy-1 .doneText2.taskTextOutsideLeft,#mmd-strategy-1 .doneText2.taskTextOutsideRight,#mmd-strategy-1 .doneText3.taskTextOutsideLeft,#mmd-strategy-1 .doneText3.taskTextOutsideRight{fill:var(--diagram-node-text, #3a2a1e)!important;}#mmd-strategy-1 .crit0,#mmd-strategy-1 .crit1,#mmd-strategy-1 .crit2,#mmd-strategy-1 .crit3{stroke:#ff8888;fill:red;stroke-width:2;}#mmd-strategy-1 .activeCrit0,#mmd-strategy-1 .activeCrit1,#mmd-strategy-1 .activeCrit2,#mmd-strategy-1 .activeCrit3{stroke:#ff8888;fill:hsl(0.4724409449, 100%, 72.8039215686%);stroke-width:2;}#mmd-strategy-1 .doneCrit0,#mmd-strategy-1 .doneCrit1,#mmd-strategy-1 .doneCrit2,#mmd-strategy-1 .doneCrit3{stroke:#ff8888;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges;}#mmd-strategy-1 .milestone{transform:rotate(45deg) scale(0.8,0.8);}#mmd-strategy-1 .milestoneText{font-style:italic;}#mmd-strategy-1 .doneCritText0,#mmd-strategy-1 .doneCritText1,#mmd-strategy-1 .doneCritText2,#mmd-strategy-1 .doneCritText3{fill:var(--diagram-node-text, #3a2a1e)!important;}#mmd-strategy-1 .doneCritText0.taskTextOutsideLeft,#mmd-strategy-1 .doneCritText0.taskTextOutsideRight,#mmd-strategy-1 .doneCritText1.taskTextOutsideLeft,#mmd-strategy-1 .doneCritText1.taskTextOutsideRight,#mmd-strategy-1 .doneCritText2.taskTextOutsideLeft,#mmd-strategy-1 .doneCritText2.taskTextOutsideRight,#mmd-strategy-1 .doneCritText3.taskTextOutsideLeft,#mmd-strategy-1 .doneCritText3.taskTextOutsideRight{fill:var(--diagram-node-text, #3a2a1e)!important;}#mmd-strategy-1 .vert{stroke:navy;}#mmd-strategy-1 .vertText{font-size:15px;text-anchor:middle;fill:navy!important;}#mmd-strategy-1 .activeCritText0,#mmd-strategy-1 .activeCritText1,#mmd-strategy-1 .activeCritText2,#mmd-strategy-1 .activeCritText3{fill:var(--diagram-node-text, #3a2a1e)!important;}#mmd-strategy-1 .titleText{text-anchor:middle;font-size:18px;fill:var(--diagram-node-text, #3a2a1e);font-family:"Courier New",Courier,monospace;}#mmd-strategy-1 .node .neo-node{stroke:var(--diagram-node-stroke, #897b6b);}#mmd-strategy-1 [data-look="neo"].node rect,#mmd-strategy-1 [data-look="neo"].cluster rect,#mmd-strategy-1 [data-look="neo"].node polygon{stroke:url(#mmd-strategy-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-strategy-1 [data-look="neo"].swimlane.cluster rect{filter:none;}#mmd-strategy-1 [data-look="neo"].node path{stroke:url(#mmd-strategy-1-gradient);stroke-width:1px;}#mmd-strategy-1 [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-strategy-1 [data-look="neo"].node .neo-line path{stroke:var(--diagram-node-stroke, #897b6b);filter:none;}#mmd-strategy-1 [data-look="neo"].node circle{stroke:url(#mmd-strategy-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-strategy-1 [data-look="neo"].node circle .state-start{fill:var(--diagram-node-text, #3a2a1e);}#mmd-strategy-1 [data-look="neo"].icon-shape .icon{fill:url(#mmd-strategy-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-strategy-1 [data-look="neo"].icon-shape .icon-neo path{stroke:url(#mmd-strategy-1-gradient);filter:drop-shadow( 1px 2px 2px var(--diagram-line, #9a8e7c));}#mmd-strategy-1 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g></g><g class="grid" transform="translate(75, 410)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,-375V0.5H634.5V-375"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="-375"></line><text fill="var(--diagram-node-text, #3a2a1e)" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">0</text></g><g class="tick" opacity="1" transform="translate(106.5,0)"><line stroke="currentColor" y2="-375"></line><text fill="var(--diagram-node-text, #3a2a1e)" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">5</text></g><g class="tick" opacity="1" transform="translate(211.5,0)"><line stroke="currentColor" y2="-375"></line><text fill="var(--diagram-node-text, #3a2a1e)" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">10</text></g><g class="tick" opacity="1" transform="translate(317.5,0)"><line stroke="currentColor" y2="-375"></line><text fill="var(--diagram-node-text, #3a2a1e)" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">15</text></g><g class="tick" opacity="1" transform="translate(423.5,0)"><line stroke="currentColor" y2="-375"></line><text fill="var(--diagram-node-text, #3a2a1e)" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">20</text></g><g class="tick" opacity="1" transform="translate(528.5,0)"><line stroke="currentColor" y2="-375"></line><text fill="var(--diagram-node-text, #3a2a1e)" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">25</text></g><g class="tick" opacity="1" transform="translate(634.5,0)"><line stroke="currentColor" y2="-375"></line><text fill="var(--diagram-node-text, #3a2a1e)" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">30</text></g></g><g><rect x="0" y="48" width="746.5" height="24" class="section section0"></rect><rect x="0" y="72" width="746.5" height="24" class="section section0"></rect><rect x="0" y="96" width="746.5" height="24" class="section section0"></rect><rect x="0" y="120" width="746.5" height="24" class="section section0"></rect><rect x="0" y="144" width="746.5" height="24" class="section section0"></rect><rect x="0" y="168" width="746.5" height="24" class="section section0"></rect><rect x="0" y="192" width="746.5" height="24" class="section section1"></rect><rect x="0" y="336" width="746.5" height="24" class="section section2"></rect><rect x="0" y="216" width="746.5" height="24" class="section section1"></rect><rect x="0" y="240" width="746.5" height="24" class="section section1"></rect><rect x="0" y="264" width="746.5" height="24" class="section section1"></rect><rect x="0" y="288" width="746.5" height="24" class="section section1"></rect><rect x="0" y="312" width="746.5" height="24" class="section section1"></rect><rect x="0" y="360" width="746.5" height="24" class="section section3"></rect><rect x="0" y="384" width="746.5" height="24" class="section section3"></rect></g><g><rect id="mmd-strategy-1-a1" rx="3" ry="3" x="75" y="50" width="127" height="20" transform-origin="138.5px 60px" class="task task0"></rect><rect id="mmd-strategy-1-a2" rx="3" ry="3" x="75" y="74" width="127" height="20" transform-origin="138.5px 84px" class="task task0"></rect><rect id="mmd-strategy-1-a3" rx="3" ry="3" x="75" y="98" width="127" height="20" transform-origin="138.5px 108px" class="task task0"></rect><rect id="mmd-strategy-1-a4" rx="3" ry="3" x="75" y="122" width="127" height="20" transform-origin="138.5px 132px" class="task task0"></rect><rect id="mmd-strategy-1-a5" rx="3" ry="3" x="75" y="146" width="190" height="20" transform-origin="170px 156px" class="task task0"></rect><rect id="mmd-strategy-1-a6" rx="3" ry="3" x="75" y="170" width="190" height="20" transform-origin="170px 180px" class="task task0"></rect><rect id="mmd-strategy-1-b1" rx="3" ry="3" x="75" y="194" width="317" height="20" transform-origin="233.5px 204px" class="task task1"></rect><rect id="mmd-strategy-1-c1" rx="3" ry="3" x="75" y="338" width="444" height="20" transform-origin="297px 348px" class="task task2"></rect><rect id="mmd-strategy-1-b2" rx="3" ry="3" x="75" y="218" width="317" height="20" transform-origin="233.5px 228px" class="task task1"></rect><rect id="mmd-strategy-1-b3" rx="3" ry="3" x="75" y="242" width="317" height="20" transform-origin="233.5px 252px" class="task task1"></rect><rect id="mmd-strategy-1-b4" rx="3" ry="3" x="75" y="266" width="444" height="20" transform-origin="297px 276px" class="task task1"></rect><rect id="mmd-strategy-1-b5" rx="3" ry="3" x="75" y="290" width="444" height="20" transform-origin="297px 300px" class="task task1"></rect><rect id="mmd-strategy-1-b6" rx="3" ry="3" x="75" y="314" width="507" height="20" transform-origin="328.5px 324px" class="task task1"></rect><rect id="mmd-strategy-1-d1" rx="3" ry="3" x="75" y="362" width="507" height="20" transform-origin="328.5px 372px" class="task task3"></rect><rect id="mmd-strategy-1-d2" rx="3" ry="3" x="76" y="386" width="633" height="20" transform-origin="392.5px 396px" class="task task3"></rect><text id="mmd-strategy-1-a1-text" font-size="11" x="207" y="63.5" text-height="20" class="taskTextOutsideRight taskTextOutside0 width-205.0322265625">Collaboration 2.0 establishment                       </text><text id="mmd-strategy-1-a2-text" font-size="11" x="207" y="87.5" text-height="20" class="taskTextOutsideRight taskTextOutside0 width-343.65478515625">Urgent portfolio diagnostic and financial assessment  </text><text id="mmd-strategy-1-a3-text" font-size="11" x="207" y="111.5" text-height="20" class="taskTextOutsideRight taskTextOutside0 width-178.6279296875">Crisis governance committee                           </text><text id="mmd-strategy-1-a4-text" font-size="11" x="207" y="135.5" text-height="20" class="taskTextOutsideRight taskTextOutside0 width-351.255859375">High-accountability market and business strategy team </text><text id="mmd-strategy-1-a5-text" font-size="11" x="170" y="159.5" text-height="20" class="taskText taskText0 width-184.84375">Essential portfolio insights                          </text><text id="mmd-strategy-1-a6-text" font-size="11" x="170" y="183.5" text-height="20" class="taskText taskText0 width-178.6279296875">Prevent future complication                           </text><text id="mmd-strategy-1-b1-text" font-size="11" x="233.5" y="207.5" text-height="20" class="taskText taskText1 width-271.04296875">Collaboration 2.0 feedback and refinement </text><text id="mmd-strategy-1-c1-text" font-size="11" x="297" y="351.5" text-height="20" class="taskText taskText2 width-350.255859375">Product and service portfolio strategy and governance </text><text id="mmd-strategy-1-b2-text" font-size="11" x="233.5" y="231.5" text-height="20" class="taskText taskText1 width-218.234375">Success experience and confidence         </text><text id="mmd-strategy-1-b3-text" font-size="11" x="233.5" y="255.5" text-height="20" class="taskText taskText1 width-132.42041015625">Brand and reputation                      </text><text id="mmd-strategy-1-b4-text" font-size="11" x="297" y="279.5" text-height="20" class="taskText taskText1 width-100.4150390625">Market feedback                           </text><text id="mmd-strategy-1-b5-text" font-size="11" x="297" y="303.5" text-height="20" class="taskText taskText1 width-179.6279296875">Market-oriented development               </text><text id="mmd-strategy-1-b6-text" font-size="11" x="328.5" y="327.5" text-height="20" class="taskText taskText1 width-152.2236328125">Strategic repositioning                   </text><text id="mmd-strategy-1-d1-text" font-size="11" x="328.5" y="375.5" text-height="20" class="taskText taskText3 width-199.43115234375">Toward a self-organized system            </text><text id="mmd-strategy-1-d2-text" font-size="11" x="392.5" y="399.5" text-height="20" class="taskText taskText3 width-257.8408203125">Collaboration 3.0 · financial stability   </text></g><g><text dy="0em" x="10" y="122" font-size="11" class="sectionTitle sectionTitle0"><tspan alignment-baseline="central" x="10">Immediate actions</tspan></text><text dy="0em" x="10" y="266" font-size="11" class="sectionTitle sectionTitle1"><tspan alignment-baseline="central" x="10">Cultural change</tspan></text><text dy="0em" x="10" y="350" font-size="11" class="sectionTitle sectionTitle2"><tspan alignment-baseline="central" x="10">Governance</tspan></text><text dy="0em" x="10" y="386" font-size="11" class="sectionTitle sectionTitle3"><tspan alignment-baseline="central" x="10">Afterward</tspan></text></g><g class="today"><line x1="37803409048" x2="37803409048" y1="25" y2="435" class="today"></line></g><text x="392" y="25" class="titleText">Proposed strategy — months from the start</text></svg></figure>
+<blockquote>
+<p><strong>Figure 7 — the proposed 24-month strategy.</strong> Three overlapping tracks — immediate actions,
+cultural change, and portfolio governance — with a fourth band for what comes afterward. Each
+bar runs from the month it starts to the month it ends. This is rebuilt from the original
+roadmap slide rather than copied from it. The slide’s horizontal axis is only marked at 6, 9,
+21, 24 and “afterward”, so the bar positions in the cultural-change track are inferred from
+where they sat left to right.</p>
+</blockquote>
+<p><strong>Phase 1 — immediate actions (months 1–6).</strong> Four moves at once:</p>
+<ul>
+<li>Explain the grand strategy to group-level leadership, and get four things agreed explicitly:
+<em>trust, freedom, support and coordination</em>. Everything else depends on them. The strategy
+names what it depends on instead of assuming it.</li>
+<li>Set up Collaboration 2.0 as a workflow with five declared properties: transparency,
+accountability, wide communication, decision review, common agreement.</li>
+<li>Run an urgent diagnostic of the portfolio and the finances, to produce what is needed for
+survival and for the next roadmap.</li>
+<li>Invest in a market and business strategy team that is held accountable, and stand up a crisis
+governance committee.</li>
+</ul>
+<p>The fourth move looks like ordinary corporate housekeeping. It is not.</p>
+<p>The diagnosis found that the strategy-and-market cluster is less a set of failures than a set
+of <strong>vacancies</strong>. The parent organisation was built for work where the customer was known in
+advance and the requirement came from outside. It never needed a function that discovers what
+to build, so it never built one. And it had no way to notice the gap, because you cannot miss
+something you have never had a reason to want
+(<a href="/portfolio/collaboration-2-0/clues-root-causes">1.2</a>).</p>
+<p>You cannot repair a missing capability with a workflow, because there is no existing activity
+to rewrite. You have to hire for it. That is the one part of this strategy the PRD wedge could
+never have reached, under any design.</p>
+<p><strong>What that team is for, and what it is not for.</strong> The point was never to hand the question of
+<em>what should we build</em> over to them. Companies are rarely lucky enough to find the person who
+can tell them the magic secret — build this and you will make a lot of money. What people with
+that background can do is give a professional structure to the arguments about the market,
+coach everyone who wants to contribute to the question of what should be built, and assess the
+proposals individuals bring.</p>
+<p><strong>Phase 2 — cultural change (months ~6–21).</strong> Feedback on Collaboration 2.0, and refinement of
+it. Building up experience of things going well, and confidence with it. Brand and reputation.
+Market feedback. Development driven by the market. Strategic repositioning.</p>
+<p>The claim behind that order is that <em>culture follows demonstrated success</em>, not the other way
+round. It is the same causal direction as
+<a href="/portfolio/collaboration-2-0/prd-as-the-wedge#232--the-decision--attach-the-reform-to-an-artifact-not-to-the-culture">2.3.2</a>,
+applied to the whole programme instead of to one document.</p>
+<p><strong>Phase 3 — afterward (months 21+).</strong> Toward a self-organized system, “Collaboration 3.0”, and
+financial stability.</p>
+<p>The end state is the framework becoming unnecessary as an imposed structure. The introduction
+letter states the goal plainly: people reach sound decisions together and approve them without
+conflict, automatically and in a distributed way, with the system design team watching rather
+than deciding. <a href="/portfolio/collaboration-2-0/what-would-have-come-next">2.7</a> is where that end state is worked
+out.</p>
+<h3 id="why-the-strategy-is-part-of-this-at-all">Why the strategy is part of this at all</h3>
+<p>Being a strategy designer has never been my goal. I do not consider myself qualified to propose
+a strategy for an organization of a hundred people, least of all one with a horizon of two years
+or more. Collaboration 2.0 is what forced it. The framework cannot be operationalized without a
+strategy, so proposing the framework meant sketching a rough one at ground level — and leaving
+it open on purpose to objection, critique and revision by other members of the group and by
+other managers.</p>
+<p>The direction here also runs the opposite way from how it looks. The strategy was not the
+starting point with Collaboration 2.0 slotted underneath it. Collaboration 2.0 has a lifecycle
+of its own: gather feedback from employees, watch the KPIs, adjust the framework and its tools.
+That same loop was meant to be built into the strategy, so the strategy could keep adjusting
+instead of standing as a fixed two-year plan.</p>
+<p>I did not spend a great deal of time on the strategy planning, and I am not presenting it as the
+strong part of the work. It had to be here for one more reason.</p>
+<p>The strategy is the bigger picture. It shows the intervals at which income is expected — real
+feedback on software that actually shipped — which is what would let the company move on the
+basis of effectuation and the voice of the market, rather than on the basis of <em>my idea has to
+work</em>.</p>
+<p>It is also where the complex-systems perspective is applied to the intervention itself. If the
+company does not succeed, Collaboration 2.0 does not succeed either. And that failure ends in
+the disappointment of the employees — the people
+<a href="/portfolio/collaboration-2-0/intellectual-assets-evidence">4.1</a> shows are the
+important asset, and the ones easiest to forget.</p>
+<p>So Collaboration 2.0 needs a bigger ecosystem to live in, and it is also expected to contribute
+to creating that ecosystem.</p>
+<hr>
+<p>⟵ <a href="/portfolio/collaboration-2-0">Up: Collaboration 2.0</a> · Previous: <a href="/portfolio/collaboration-2-0/intellectual-assets-evidence">4.1 · Evidence — the intellectual-assets analysis</a> · Next: <a href="/portfolio/collaboration-2-0/survey-analysis">4.3 · The survey — instrument, results and reading →</a></p></article></div></div> </main> <footer class="animate"> <div class="mx-auto px-3 max-w-(--measure)">  <div class="relative"> <div class="absolute -top-12 right-0"> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{const o=window.matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:0,behavior:o?"auto":"smooth"})})});</script> <button id="back-to-top" class="group border-muted/45 hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex w-fit flex-nowrap rounded-sm border px-3 py-1.5 transition-colors duration-300 ease-in-out"> <div class="text-sm">Back to top</div> </button> </div> </div> <div class="flex items-center justify-between"> <div class="flex flex-wrap items-center gap-x-2 gap-y-1"> <span>&copy; 2026 • Hossein</span> <a href="/manifesto" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Manifesto</a><a href="/rss.xml" target="_self" class="decoration-ink/30 hover:decoration-ink/50 focus-visible:decoration-ink/50 text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">RSS</a> </div> <div class="flex flex-wrap items-center gap-1.5"> <button id="light-theme-button" aria-label="Light theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> <button id="dark-theme-button" aria-label="Dark theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> <button id="system-theme-button" aria-label="System theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect> <line x1="8" y1="21" x2="16" y2="21"></line> <line x1="12" y1="17" x2="12" y2="21"></line> </svg> </button> </div> </div>  </div> </footer> <aside data-pagefind-ignore> <div id="backdrop" class="bg-[rgba(0, 0, 0, 0.5] invisible fixed top-0 left-0 z-50 flex h-screen w-full justify-center p-6 backdrop-blur-xs" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="border-muted/45 bg-ground m-0 flex h-fit max-h-[80%] w-full max-w-(--breakpoint-sm) flex-col overflow-auto rounded-sm border p-2 px-4 py-3 shadow-lg"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&#34;showImages&#34;:false,&#34;excerptLength&#34;:15,&#34;resetStyles&#34;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="mr-2 pt-4 pb-1 text-right text-xs">
+Press <span class="prose text-xs"><kbd class="">Esc</kbd></span> or click
+        anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>
