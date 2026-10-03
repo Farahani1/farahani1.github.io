@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!--
+  Favicon: the شاه calligraphy, ink #3A2A1E on ground #E9DFC9 so it reads
+  against both light and dark browser chrome. The .ico carries 16/32/48.
+  See docs/art-direction.md — no pure black, no pure white, no emoji.
+--><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.1.3"><!-- Canonical URL --><link rel="canonical" href="https://farahani1.github.io/work-with-me/start/"><!-- Primary Meta Tags --><title>Start a conversation | Hossein Shahabadi Farahani</title><meta name="title" content="Start a conversation | Hossein Shahabadi Farahani"><meta name="description" content="Send me the problem and I reply with a short written read, so our first conversation starts from something concrete."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://farahani1.github.io/work-with-me/start/"><meta property="og:title" content="Start a conversation | Hossein Shahabadi Farahani"><meta property="og:description" content="Send me the problem and I reply with a short written read, so our first conversation starts from something concrete."><meta property="og:image" content="https://farahani1.github.io/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://farahani1.github.io/work-with-me/start/"><meta property="twitter:title" content="Start a conversation | Hossein Shahabadi Farahani"><meta property="twitter:description" content="Send me the problem and I reply with a short written read, so our first conversation starts from something concrete."><meta property="twitter:image" content="https://farahani1.github.io/og.png"><!-- Structured data --><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    updateThemeButtons();
+    addCopyCodeButtons();
+    setGiscusTheme();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    const lightThemeButton = document.getElementById("light-theme-button");
+    lightThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "light");
+      toggleTheme(false);
+      updateThemeButtons();
+    });
+
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    darkThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "dark");
+      toggleTheme(true);
+      updateThemeButtons();
+    });
+
+    const systemThemeButton = document.getElementById("system-theme-button");
+    systemThemeButton?.addEventListener("click", () => {
+      localStorage.setItem("theme", "system");
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      updateThemeButtons();
+    });
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (event) => {
+        if (localStorage.theme === "system") {
+          toggleTheme(event.matches);
+        }
+      });
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function updateThemeButtons() {
+    const theme = localStorage.getItem("theme");
+    const lightThemeButton = document.getElementById("light-theme-button");
+    const darkThemeButton = document.getElementById("dark-theme-button");
+    const systemThemeButton = document.getElementById("system-theme-button");
+
+    function removeActiveButtonTheme(button) {
+      // One token, both modes — bg-ink/5 resolves per theme now.
+      button?.classList.remove("bg-ink/5");
+    }
+
+    function addActiveButtonTheme(button) {
+      button?.classList.add("bg-ink/5");
+    }
+
+    removeActiveButtonTheme(lightThemeButton);
+    removeActiveButtonTheme(darkThemeButton);
+    removeActiveButtonTheme(systemThemeButton);
+
+    if (theme === "light") {
+      addActiveButtonTheme(lightThemeButton);
+    } else if (theme === "dark") {
+      addActiveButtonTheme(darkThemeButton);
+    } else {
+      addActiveButtonTheme(systemThemeButton);
+    }
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+    // The CSS already forces these visible under reduced motion; skipping
+    // the timer as well means no staggered class churn either.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    animateElements.forEach((element, index) => {
+      if (reduce) {
+        element.classList.add("show");
+        return;
+      }
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    // CSS cannot reach a scroll behaviour set in JS, so check here too.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({
+      top: 0,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+
+    setGiscusTheme();
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    // Text, not emoji: docs/art-direction.md bans emoji as iconography.
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "Copied";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  const setGiscusTheme = () => {
+    const giscus = document.querySelector(".giscus-frame");
+
+    const isDark = document.documentElement.classList.contains("dark");
+
+    if (giscus) {
+      const url = new URL(giscus.src);
+      url.searchParams.set("theme", isDark ? "dark" : "light");
+      giscus.src = url.toString();
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.GRqjAclo.css">
+<style>nav[data-astro-cid-hh67uq7u]{color:var(--flow-ink)}a[data-astro-cid-hh67uq7u][data-toc-link]{color:var(--flow-ink);border-radius:2px}a[data-astro-cid-hh67uq7u][data-toc-link]:hover{color:var(--flow-strong);background:color-mix(in srgb,var(--flow) 8%,transparent)}a[data-astro-cid-hh67uq7u][aria-current=location]{color:var(--flow-strong);font-weight:700;background:var(--flow-wash)}a[data-astro-cid-hh67uq7u][aria-current=location]:before{content:"";position:absolute;left:-14.5px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--flow)}
+</style></head> <body> <noscript> <style>
+        .animate {
+          opacity: 1;
+          translate: var(--tw-translate-x) calc(var(--spacing) * 0);
+        }
+      </style> </noscript> <header data-astro-transition-persist="astro-l7r54iwe-1"> <div class="mx-auto px-3 max-w-[820px]">  <div class="flex flex-wrap justify-between gap-y-2">   <a href="/" target="_self" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out"> <div class="flex items-center gap-3"> <img src="/katibe-v3-ink.png" alt="" class="h-12 w-auto dark:hidden" width="37" height="48"> <img src="/katibe-v3-cream.png" alt="" class="hidden h-12 w-auto dark:block" width="37" height="48"> <div class="flex flex-col"> <span class="font-semibold">Hossein</span> <span class="text-xs">AI System Design</span> </div> </div> </a> <nav class="flex items-center gap-1 text-sm">  <a href="/portfolio" target="_self" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Portfolio</a> <span>/</span> <a href="/writing" target="_self" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Writing</a> <span>/</span> <a href="/workshop" target="_self" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Workbench</a> <span>/</span> <a href="/work-with-me" target="_self" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Work with me</a>  <span> / </span> <button id="magnifying-glass" aria-label="Search" class="border-muted/45 bg-ground hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex items-center rounded-sm border px-2 py-1 text-xs transition-colors duration-300 ease-in-out"> <svg height="16" stroke-linejoin="round" viewBox="0 0 16 16" width="16" style="color: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 7C3.5 5.067 5.067 3.5 7 3.5C8.933 3.5 10.5 5.067 10.5 7C10.5 7.88461 10.1718 8.69256 9.63058 9.30876L9.30876 9.63058C8.69256 10.1718 7.88461 10.5 7 10.5C5.067 10.5 3.5 8.933 3.5 7ZM9.96544 11.0261C9.13578 11.6382 8.11014 12 7 12C4.23858 12 2 9.76142 2 7C2 4.23858 4.23858 2 7 2C9.76142 2 12 4.23858 12 7C12 8.11014 11.6382 9.13578 11.0261 9.96544L14.0303 12.9697L14.5607 13.5L13.5 14.5607L12.9697 14.0303L9.96544 11.0261Z" fill="currentColor"></path></svg>
+&nbsp;Search
+</button> </nav> </div>  </div> </header> <main> <div class="mx-auto flex max-w-[1040px] flex-wrap items-start gap-x-9 px-4"><aside class="order-1 w-full shrink-0 self-start py-2 lg:sticky lg:top-24 lg:w-[262px]"><div class="border-ink/15 max-h-[calc(100vh-8rem)] overflow-y-auto pb-4 lg:border-r lg:pr-5"><nav aria-label="Pages in this section" class="text-ink/75"> <p class="text-quiet border-ink/15 mb-3.5 border-b pb-2.5 font-mono text-[10.5px] tracking-[0.1em] uppercase">
+In this section
+</p> <a href="/work-with-me" class="border-ink/25 text-ink hover:bg-ink/5 mb-1 flex items-center justify-between gap-2 border-l-2 py-1.5 pr-1 pl-2.5 text-[15.5px] leading-tight font-semibold no-underline transition-colors"> Work with me </a> <ul class="border-ink/15 ml-2.5 list-none border-l pl-0">  <li> <a href="/work-with-me/services" class="-ml-px block border-l-2 py-1.5 pr-2 pl-3 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent"> Services </a> </li>  <li> <a href="/work-with-me/packages" class="-ml-px block border-l-2 py-1.5 pr-2 pl-3 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent"> Packages &amp; pricing </a> </li>  <li> <a href="/work-with-me/process" class="-ml-px block border-l-2 py-1.5 pr-2 pl-3 text-[14.5px] leading-snug text-pretty no-underline transition-colors hover:text-ink hover:bg-ink/5 border-transparent"> How an engagement runs </a> </li> <script type="module">let l=null;const s=()=>{l?.(),l=null;const i=document.querySelector("[data-on-this-page]");if(!i)return;const t=new Map;for(const e of i.querySelectorAll("[data-toc-link]"))t.set(e.dataset.tocLink,e);const r=[...t.keys()].map(e=>document.getElementById(e)).filter(e=>e!==null);let n=null;const o=()=>{let e=r.length?r[0].id:null;for(const a of r)if(a.getBoundingClientRect().top<=120)e=a.id;else break;e!==n&&(n&&t.get(n)?.removeAttribute("aria-current"),e&&t.get(e)?.setAttribute("aria-current","location"),n=e)};window.addEventListener("scroll",o,{passive:!0}),o(),l=()=>window.removeEventListener("scroll",o)};document.addEventListener("astro:page-load",s);s();</script> <li> <a href="/work-with-me/start" aria-current="page" class="-ml-px block border-l-2 py-1.5 pr-2 pl-3 text-[14.5px] leading-snug text-pretty no-underline transition-colors border-accent text-accent bg-accent/10 font-semibold"> Start a conversation </a> </li> <li> <nav aria-label="On this page" data-on-this-page class="border-flow/45 mt-1 mb-2 ml-3 border-l-2 pl-2.5" data-astro-cid-hh67uq7u><p class="mb-1 font-mono text-[9.5px] tracking-[0.11em] uppercase" data-astro-cid-hh67uq7u>
+On this page
+</p><ul class="list-none p-0" data-astro-cid-hh67uq7u><li data-astro-cid-hh67uq7u><a href="#what-youll-get-back" data-toc-link="what-youll-get-back" class="relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-[13.5px] font-semibold" style="padding-left: 4px" data-astro-cid-hh67uq7u>What you’ll get back</a></li><li data-astro-cid-hh67uq7u><a href="#request-a-review" data-toc-link="request-a-review" class="relative block py-[3px] pr-1 leading-snug text-pretty no-underline transition-colors text-[13.5px] font-semibold" style="padding-left: 4px" data-astro-cid-hh67uq7u>Request a review</a></li></ul></nav> </li> </ul> </nav></div></aside><div class="order-2 min-w-0 max-w-(--measure) flex-1 basis-[440px]"><nav aria-label="Breadcrumb" class="mb-6"> <ol class="text-quiet flex list-none flex-wrap items-center gap-x-1.5 gap-y-1 p-0 font-mono text-[11px] tracking-[0.06em] uppercase"> <li class="flex items-center gap-1.5"> <a href="/work-with-me" class="hover:text-ink no-underline"> Work with me </a> <span aria-hidden="true">›</span> </li> <li class="text-accent" aria-current="page">Start a conversation</li> </ol> </nav><h1 class="animate text-ink text-3xl font-semibold">Start a conversation</h1><article class="animate mt-8"><p><strong>Let’s take it easy.</strong> Before we meet, send me the problem. I’ll read it and reply with a short preliminary assessment, so our first conversation starts from something concrete rather than “so, tell me about your project.”</p>
+<p>Bring a rough idea, a contractor proposal, or a problem you have struggled to frame. If I am not the person you need, I will tell you.</p>
+<h2 id="what-youll-get-back">What you’ll get back</h2>
+<ul>
+<li>My reading of the problem, and what I suspect sits underneath it.</li>
+<li>Whether AI or ML is plausibly the right tool. Sometimes it is not.</li>
+<li>What I would investigate first, and what is still missing.</li>
+<li>Whether I think I can help, and a suggested next step.</li>
+</ul>
+<p>This is a preliminary read, not a solution or a design. I review every submission personally; if it looks like a reasonable fit, you’ll hear back with the assessment and we can decide whether a meeting makes sense.</p>
+<h2 id="request-a-review">Request a review</h2>
+<p>Ten to fifteen minutes of writing. Plain language is better than polish. Answer what you can:</p>
+<ol> <li> <strong>What are you trying to achieve?</strong>  The outcome or decision you want to improve, not the technology. </li><li> <strong>What happens today?</strong>  How it is done now, and what isn&#39;t working. </li><li> <strong>What makes it hard?</strong>  Data quality, scale, accuracy, latency, cost, integration, human workflow — or not sure yet. </li><li> <strong>What have you already tried?</strong> <span class="font-detail text-quiet"> Optional.</span>  </li><li> <strong>Where are you with it?</strong>  Exploring an idea, reviewing a proposal, ready to build, or already built and struggling. </li><li> <strong>Your industry and organisation size.</strong>   </li><li> <strong>What data and systems are involved?</strong> <span class="font-detail text-quiet"> Optional.</span> Rough volume, where it lives, anything already running. Guesses are fine. </li><li> <strong>Is something driving the timing?</strong> <span class="font-detail text-quiet"> Optional.</span> A budget decision, a contract, a launch. </li> </ol> <p>
+Attach anything useful: diagrams, requirements, a proposal, a small data
+  sample.
+</p> <p class="not-prose mt-8 flex flex-wrap items-center gap-x-5 gap-y-3"> <a class="cta" href="mailto:h.sh.farahani1@gmail.com?subject=Request%20for%20free%20feedback&#38;body=What%20are%20you%20trying%20to%20achieve%3F%0D%0A(The%20outcome%20or%20decision%20you%20want%20to%20improve%2C%20not%20the%20technology.)%0D%0A%0D%0A%0D%0AWhat%20happens%20today%3F%0D%0A(How%20it%20is%20done%20now%2C%20and%20what%20isn't%20working.)%0D%0A%0D%0A%0D%0AWhat%20makes%20it%20hard%3F%0D%0A(Data%20quality%2C%20scale%2C%20accuracy%2C%20latency%2C%20cost%2C%20integration%2C%20human%20workflow%20%E2%80%94%20or%20not%20sure%20yet.)%0D%0A%0D%0A%0D%0AWhat%20have%20you%20already%20tried%3F%20(optional)%0D%0A%0D%0A%0D%0AWhere%20are%20you%20with%20it%3F%0D%0A(Exploring%20an%20idea%2C%20reviewing%20a%20proposal%2C%20ready%20to%20build%2C%20or%20already%20built%20and%20struggling.)%0D%0A%0D%0A%0D%0AYour%20industry%20and%20organisation%20size.%0D%0A%0D%0A%0D%0AWhat%20data%20and%20systems%20are%20involved%3F%20(optional)%0D%0A(Rough%20volume%2C%20where%20it%20lives%2C%20anything%20already%20running.%20Guesses%20are%20fine.)%0D%0A%0D%0A%0D%0AIs%20something%20driving%20the%20timing%3F%20(optional)%0D%0A(A%20budget%20decision%2C%20a%20contract%2C%20a%20launch.)%0D%0A%0D%0A%0D%0AName%2C%20organisation%2C%20website%20or%20LinkedIn%3A%0D%0A%0D%0A%0D%0A(Attach%20anything%20useful%3A%20diagrams%2C%20requirements%2C%20a%20proposal%2C%20a%20small%20data%20sample.)%0D%0A">Send for review</a> <span class="font-detail text-quiet text-[0.9375rem]">
+Opens an email with these questions. Kept private, never published.
+</span> </p> <p>
+Prefer to write it your own way? <a href="mailto:h.sh.farahani1@gmail.com">h.sh.farahani1@gmail.com</a> </p></article></div></div> </main> <footer class="dark bg-surface text-ink animate"> <div class="mx-auto grid max-w-[1340px] grid-cols-1 items-end justify-items-center gap-10 px-6 py-12 lg:grid-cols-[1fr_auto_1fr] lg:justify-items-stretch"> <div class="order-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 lg:order-1 lg:justify-start"> <span>&copy; 2026 • Hossein</span> <a href="/manifesto" target="_self" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">Manifesto</a><a href="/rss.xml" target="_self" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out underline underline-offset-[3px]">RSS</a> </div>  <img src="/katibe-v3-cream.png" alt="" class="order-1 h-44 w-auto lg:order-2 lg:h-64" width="723" height="942"> <div class="order-2 flex flex-wrap items-end justify-center gap-10 lg:order-3 lg:justify-end"> <section class="flex flex-col items-center gap-3"> <h2 class="text-base font-bold">Let's connect</h2>  <ul class="flex items-center gap-4"> <li class="flex"> <a href="https://github.com/Farahani1" target="_blank" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out" aria-label="Hossein on github" title="github"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg> </a> </li><li class="flex"> <a href="https://www.linkedin.com/in/hossein-shahabadi-farahani/" target="_blank" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out" aria-label="Hossein on LinkedIn" title="LinkedIn"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg> </a> </li> <li class="flex"> <a href="mailto:h.sh.farahani1@gmail.com" target="_self" class="decoration-link-rule hover:decoration-ink focus-visible:decoration-ink text-current hover:text-ink focus-visible:text-ink transition-colors duration-300 ease-in-out" aria-label="Email Hossein" title="Email"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg> </a> </li> </ul> </section> <div class="flex flex-col items-center gap-3 lg:items-end"> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{const o=window.matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:0,behavior:o?"auto":"smooth"})})});</script> <button id="back-to-top" class="group border-muted/45 hover:bg-ink/5 hover:text-ink focus-visible:bg-ink/5 focus-visible:text-ink flex w-fit flex-nowrap rounded-sm border px-3 py-1.5 transition-colors duration-300 ease-in-out"> <div class="text-sm">Back to top</div> </button> <div class="flex items-center gap-1.5"> <button id="light-theme-button" aria-label="Light theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <circle cx="12" cy="12" r="5"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line> </svg> </button> <button id="dark-theme-button" aria-label="Dark theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path> </svg> </button> <button id="system-theme-button" aria-label="System theme" class="group border-muted/45 hover:bg-ink/5 focus-visible:bg-ink/5 flex size-9 items-center justify-center rounded-sm border"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-ink group-focus-visible:stroke-ink transition-colors duration-300 ease-in-out group-hover:animate-pulse group-focus-visible:animate-pulse"> <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect> <line x1="8" y1="21" x2="16" y2="21"></line> <line x1="12" y1="17" x2="12" y2="21"></line> </svg> </button> </div> </div> </div> </div> </footer> <aside data-pagefind-ignore> <div id="backdrop" class="bg-[rgba(0, 0, 0, 0.5] invisible fixed top-0 left-0 z-50 flex h-screen w-full justify-center p-6 backdrop-blur-xs" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="border-muted/45 bg-ground m-0 flex h-fit max-h-[80%] w-full max-w-(--breakpoint-sm) flex-col overflow-auto rounded-sm border p-2 px-4 py-3 shadow-lg"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&#34;showImages&#34;:false,&#34;excerptLength&#34;:15,&#34;resetStyles&#34;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="mr-2 pt-4 pb-1 text-right text-xs">
+Press <span class="prose text-xs"><kbd class="">Esc</kbd></span> or click
+        anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>
