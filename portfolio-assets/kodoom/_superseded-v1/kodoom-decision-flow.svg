@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="kodoom-title kodoom-desc">
+  <title id="kodoom-title">Kodoom decision interface</title>
+  <desc id="kodoom-desc">Persian or English context, a question, and candidate options flow into a 322-million-parameter encoder and decision head. Probabilities for the supplied options pass to the application, which selects an action or requests review.</desc>
+  <style>
+    :root {
+      --diagram-ground: #E9DFC9;
+      --diagram-node-fill: #D6B493;
+      --diagram-node-stroke: #A89C8D;
+      --diagram-node-text: #3A2A1E;
+      --diagram-accent: #A85535;
+      --diagram-flow: #5C6849;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --diagram-ground: #1C1611;
+        --diagram-node-fill: #2A211A;
+        --diagram-node-text: #E9DFC9;
+        --diagram-accent: #C46A4A;
+        --diagram-flow: #6E7B5A;
+      }
+    }
+    /* Static fallbacks keep the build-time resvg social-card renderer readable. */
+    text { fill: #3A2A1E; font-family: 'Geist Mono', Consolas, monospace; font-size: 20px; }
+    .ground { fill: #E9DFC9; }
+    .model { fill: #D6B493; stroke: #A85535; stroke-width: 1.5; }
+    .panel { fill: none; stroke: #A89C8D; stroke-width: 1.5; }
+    .flow { fill: none; stroke: #5C6849; stroke-width: 1.5; marker-end: url(#kodoom-arrow); }
+    .arrow { fill: #5C6849; }
+    @supports (color: var(--diagram-node-text)) {
+      text { fill: var(--diagram-node-text); }
+      .ground { fill: var(--diagram-ground); }
+      .model { fill: var(--diagram-node-fill); stroke: var(--diagram-accent); }
+      .panel { stroke: var(--diagram-node-stroke); }
+      .flow { stroke: var(--diagram-flow); }
+      .arrow { fill: var(--diagram-flow); }
+    }
+  </style>
+  <defs>
+    <marker id="kodoom-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" class="arrow" />
+    </marker>
+  </defs>
+  <rect width="1200" height="675" class="ground" />
+  <text x="60" y="84">Kodoom</text>
+  <text x="60" y="122">Context in. Decision probabilities out.</text>
+
+  <rect class="panel" x="60" y="212" width="310" height="250" rx="2" />
+  <text x="84" y="254">Decision input</text>
+  <path d="M84 276 H346" class="panel" />
+  <text x="84" y="316">Persian / English</text>
+  <text x="84" y="354">Context + question</text>
+  <text x="84" y="392">Option IDs + meanings</text>
+  <text x="84" y="430">Supplied per request</text>
+
+  <path d="M370 337 H438" class="flow" />
+
+  <rect x="450" y="212" width="290" height="250" rx="2" class="model" />
+  <text x="474" y="254">Kodoom</text>
+  <path d="M474 276 H716" class="panel" />
+  <text x="474" y="316">322M parameters</text>
+  <text x="474" y="354">mmBERT encoder</text>
+  <text x="474" y="392">Decision head</text>
+  <text x="474" y="430">Scores each option</text>
+
+  <path d="M740 337 H808" class="flow" />
+
+  <rect class="panel" x="820" y="212" width="320" height="250" rx="2" />
+  <text x="844" y="254">Application</text>
+  <path d="M844 276 H1116" class="panel" />
+  <text x="844" y="316">Probability / option</text>
+  <text x="844" y="354">Select an action</text>
+  <text x="844" y="392">Or request review</text>
+  <text x="844" y="430">Policy set by caller</text>
+
+  <path d="M60 526 H1140" class="panel" />
+  <text x="60" y="572">Support triage / invoices / incidents / agent oversight</text>
+  <text x="60" y="612">Full encoder and decision-head adaptation of Laya-multilingual</text>
+</svg>
